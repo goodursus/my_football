@@ -1,0 +1,52 @@
+.slider_light {
+    background-color: white;
+    color: black;
+    .rc-slider-track {
+        background-color: green;  /* Установите желаемый цвет для выделенной области слайдера */
+     }
+  }
+
+.slider_dark {
+    background-color: darkgray;
+    color: white;
+    .rc-slider-track {
+        background-color: green;  /* Установите желаемый цвет для выделенной области слайдера */
+    }
+  }
+
+/* custom.css */
+.custom-radio-item {
+    margin-bottom: 15px; /* Увеличение расстояния между кнопками */
+    width: 200px; /* Фиксированная ширина кнопок */
+    display: flex; /* Включаем flexbox для центрирования */
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
+}
+
+.btn-outline-primary {
+    background-color: lightgray; /* Цвет фона неактивных кнопок */
+    color: blue;
+    border-color: blue; /* Цвет границы */
+}
+
+.btn-outline-primary:hover {
+    background-color: gray; /* Цвет фона при наведении */
+    color: white; /* Цвет текста при наведении */
+}
+
+.btn-outline-primary.active {
+    background-color: rgb(250, 228, 228); /* Цвет фона активных кнопок */
+    color: white; /* Цвет текста активных кнопок */
+}
+
+.small-button {
+    font-size: 10px; /* Уменьшение размера шрифта */
+/*    padding: 5px 10px; /* Уменьшение внутренних отступов */
+    height: 20px; /* Уменьшение высоты кнопки */
+}
+
+.centered-button {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}

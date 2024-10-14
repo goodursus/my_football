@@ -1,0 +1,274 @@
+2024-08-28 20:24 - INFO - **********************  Start *******************
+2024-08-28 20:24 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: <module>
+2024-08-28 20:24 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/Countries.json, query_params: countries, range_season: {}
+2024-08-28 20:24 - INFO - Dash is running on http://127.0.0.1:8050/
+
+2024-08-28 20:24 - INFO - **********************  Start *******************
+2024-08-28 20:24 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: <module>
+2024-08-28 20:24 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/Countries.json, query_params: countries, range_season: {}
+2024-08-28 20:24 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: set_country_options, index: 4, value: add_context
+2024-08-28 20:24 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/leagues_England.json, query_params: leagues?country=England, range_season: {}
+2024-08-28 20:24 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: set_leagues_options, index: 4, value: add_context
+2024-08-28 20:24 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/leagues_39.json, query_params: leagues?id=39, range_season: {}
+2024-08-28 20:26 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: set_country_options, index: 4, value: add_context
+2024-08-28 20:26 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/leagues_England.json, query_params: leagues?country=England, range_season: {}
+2024-08-28 20:26 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: set_leagues_options, index: 4, value: add_context
+2024-08-28 20:26 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/leagues_39.json, query_params: leagues?id=39, range_season: {}
+2024-08-28 20:26 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: update_graph, index: 4, value: add_context
+2024-08-28 20:26 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/standing_39_2024.json, query_params: standings?league=39&season=2024, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-28 20:26 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/total_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-28 20:26 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/current_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024&current=true, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-28 20:26 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/progress_39_2024.json, query_params: fixtures?league=39&season=2024, range_season: {}
+2024-08-28 20:26 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: display_value, index: 4, value: add_context
+2024-08-28 20:26 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/progress_39_2024.json, query_params: fixtures?league=39&season=2024, range_season: {}
+2024-08-28 20:27 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_access, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-28 20:27 - DEBUG - Round: 1
+2024-08-28 20:27 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/1/1208029.json, query_params: fixtures/events?fixture=1208029, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-28 20:27 - DEBUG - Round: 2
+2024-08-28 20:27 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/2/1208037.json, query_params: fixtures/events?fixture=1208037, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-28 20:27 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/progress_39_2024.json, query_params: fixtures?league=39&season=2024, range_season: {}
+2024-08-28 20:27 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_access, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-28 20:27 - DEBUG - Round: 1
+2024-08-28 20:27 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/1/1208029.json, query_params: fixtures/events?fixture=1208029, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-28 20:27 - DEBUG - Round: 2
+2024-08-28 20:27 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/2/1208040.json, query_params: fixtures/events?fixture=1208040, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:36 - INFO - **********************  Start *******************
+2024-08-29 18:36 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: <module>
+2024-08-29 18:36 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/Countries.json, query_params: countries, range_season: {}
+2024-08-29 18:36 - INFO - Dash is running on http://127.0.0.1:8050/
+
+2024-08-29 18:36 - INFO - **********************  Start *******************
+2024-08-29 18:36 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: <module>
+2024-08-29 18:36 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/Countries.json, query_params: countries, range_season: {}
+2024-08-29 18:36 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: set_leagues_options, index: 4, value: add_context
+2024-08-29 18:36 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/leagues_39.json, query_params: leagues?id=39, range_season: {}
+2024-08-29 18:36 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: set_country_options, index: 4, value: add_context
+2024-08-29 18:36 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/leagues_England.json, query_params: leagues?country=England, range_season: {}
+2024-08-29 18:36 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: update_graph, index: 4, value: add_context
+2024-08-29 18:36 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/standing_39_2024.json, query_params: standings?league=39&season=2024, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:36 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: load_json, index: 2, value: download_and_save, index: 3, value: get_standing, index: 4, value: set_standing_table
+2024-08-29 18:36 - DEBUG - load_json - file_name: Statistic/standing_39_2024.json, query_params: standings?league=39&season=2024, check_zero: True, result: 1
+2024-08-29 18:36 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/total_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:36 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: load_json, index: 2, value: download_and_save, index: 3, value: get_total_round, index: 4, value: get_info_stand
+2024-08-29 18:37 - DEBUG - load_json - file_name: Statistic/39/2024/total_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024, check_zero: True, result: 38
+2024-08-29 18:37 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/current_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024&current=true, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:37 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: load_json, index: 2, value: download_and_save, index: 3, value: get_current_round, index: 4, value: get_info_stand
+2024-08-29 18:37 - DEBUG - load_json - file_name: Statistic/39/2024/current_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024&current=true, check_zero: False, result: 1
+2024-08-29 18:37 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/current_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024&current=true, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:37 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: load_json, index: 2, value: download_and_save, index: 3, value: get_current_round, index: 4, value: get_info_stand
+2024-08-29 18:37 - DEBUG - load_json - file_name: Statistic/39/2024/current_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024&current=true, check_zero: False, result: 1
+2024-08-29 18:37 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/progress_39_2024.json, query_params: fixtures?league=39&season=2024, range_season: {}
+2024-08-29 18:37 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: display_value, index: 4, value: add_context
+2024-08-29 18:37 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/progress_39_2024.json, query_params: fixtures?league=39&season=2024, range_season: {}
+2024-08-29 18:37 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_access, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-29 18:37 - DEBUG - Round: 1
+2024-08-29 18:37 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/1/1208029.json, query_params: fixtures/events?fixture=1208029, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:37 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: load_json, index: 2, value: download_and_save, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-29 18:37 - DEBUG - load_json - file_name: Statistic/39/2024/Rounds/1/1208029.json, query_params: fixtures/events?fixture=1208029, check_zero: True, result: 9
+2024-08-29 18:37 - DEBUG - Round: 2
+2024-08-29 18:37 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/2/1208037.json, query_params: fixtures/events?fixture=1208037, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:37 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: load_json, index: 2, value: download_and_save, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-29 18:37 - DEBUG - load_json - file_name: Statistic/39/2024/Rounds/2/1208037.json, query_params: fixtures/events?fixture=1208037, check_zero: True, result: 21
+2024-08-29 18:37 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/progress_39_2024.json, query_params: fixtures?league=39&season=2024, range_season: {}
+2024-08-29 18:37 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_access, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-29 18:37 - DEBUG - Round: 1
+2024-08-29 18:37 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/1/1208029.json, query_params: fixtures/events?fixture=1208029, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:37 - DEBUG - Round: 2
+2024-08-29 18:37 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/2/1208040.json, query_params: fixtures/events?fixture=1208040, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:37 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: load_json, index: 2, value: download_and_save, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-29 18:37 - DEBUG - load_json - file_name: Statistic/39/2024/Rounds/2/1208040.json, query_params: fixtures/events?fixture=1208040, check_zero: True, result: 23
+2024-08-29 18:45 - INFO - **********************  Start *******************
+2024-08-29 18:45 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: <module>
+2024-08-29 18:45 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/Countries.json, query_params: countries, range_season: {}
+2024-08-29 18:45 - INFO - Dash is running on http://127.0.0.1:8050/
+
+2024-08-29 18:45 - INFO - **********************  Start *******************
+2024-08-29 18:45 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: <module>
+2024-08-29 18:45 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/Countries.json, query_params: countries, range_season: {}
+2024-08-29 18:45 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: set_country_options, index: 4, value: add_context
+2024-08-29 18:45 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/leagues_England.json, query_params: leagues?country=England, range_season: {}
+2024-08-29 18:45 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: set_leagues_options, index: 4, value: add_context
+2024-08-29 18:45 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/leagues_39.json, query_params: leagues?id=39, range_season: {}
+2024-08-29 18:45 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: update_graph, index: 4, value: add_context
+2024-08-29 18:45 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/standing_39_2024.json, query_params: standings?league=39&season=2024, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:45 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/total_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:45 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/current_round_39_2024.json, query_params: fixtures/rounds?league=39&season=2024&current=true, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:45 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/progress_39_2024.json, query_params: fixtures?league=39&season=2024, range_season: {}
+2024-08-29 18:45 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: display_value, index: 4, value: add_context
+2024-08-29 18:46 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/progress_39_2024.json, query_params: fixtures?league=39&season=2024, range_season: {}
+2024-08-29 18:46 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_access, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-29 18:46 - DEBUG - Round: 1
+2024-08-29 18:46 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/1/1208029.json, query_params: fixtures/events?fixture=1208029, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:46 - DEBUG - Round: 2
+2024-08-29 18:46 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/2/1208037.json, query_params: fixtures/events?fixture=1208037, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:46 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/progress_39_2024.json, query_params: fixtures?league=39&season=2024, range_season: {}
+2024-08-29 18:46 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_access, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-29 18:46 - DEBUG - Round: 1
+2024-08-29 18:46 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/1/1208029.json, query_params: fixtures/events?fixture=1208029, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:46 - DEBUG - Round: 2
+2024-08-29 18:46 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2024/Rounds/2/1208040.json, query_params: fixtures/events?fixture=1208040, range_season: {'year': 2024, 'start': '2024-08-16', 'end': '2025-05-25', 'current': True}
+2024-08-29 18:46 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: display_value, index: 4, value: add_context
+2024-08-29 18:52 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: display_value, index: 4, value: add_context
+2024-08-29 18:53 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: update_graph, index: 4, value: add_context
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/standing_39_2023.json, query_params: standings?league=39&season=2023, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/total_round_39_2023.json, query_params: fixtures/rounds?league=39&season=2023, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/current_round_39_2023.json, query_params: fixtures/rounds?league=39&season=2023&current=true, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/progress_39_2023.json, query_params: fixtures?league=39&season=2023, range_season: {}
+2024-08-29 18:53 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: display_value, index: 4, value: add_context
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/progress_39_2023.json, query_params: fixtures?league=39&season=2023, range_season: {}
+2024-08-29 18:53 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_access, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-29 18:53 - DEBUG - Round: 1
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/1/1035037.json, query_params: fixtures/events?fixture=1035037, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 2
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/2/1035052.json, query_params: fixtures/events?fixture=1035052, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 3
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/3/1035066.json, query_params: fixtures/events?fixture=1035066, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 4
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/4/1035075.json, query_params: fixtures/events?fixture=1035075, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 5
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/5/1035085.json, query_params: fixtures/events?fixture=1035085, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 6
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/6/1035095.json, query_params: fixtures/events?fixture=1035095, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 7
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/7/1035106.json, query_params: fixtures/events?fixture=1035106, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 8
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/8/1035107.json, query_params: fixtures/events?fixture=1035107, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 9
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/9/1035122.json, query_params: fixtures/events?fixture=1035122, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 10
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/10/1035134.json, query_params: fixtures/events?fixture=1035134, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 11
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/11/1035142.json, query_params: fixtures/events?fixture=1035142, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 12
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/12/1035151.json, query_params: fixtures/events?fixture=1035151, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 13
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/13/1035299.json, query_params: fixtures/events?fixture=1035299, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 14
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/14/1035310.json, query_params: fixtures/events?fixture=1035310, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 15
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/15/1035314.json, query_params: fixtures/events?fixture=1035314, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 16
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/16/1035329.json, query_params: fixtures/events?fixture=1035329, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 17
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/17/1035340.json, query_params: fixtures/events?fixture=1035340, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 18
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/18/1035349.json, query_params: fixtures/events?fixture=1035349, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 19
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/19/1035360.json, query_params: fixtures/events?fixture=1035360, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 20
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/20/1035369.json, query_params: fixtures/events?fixture=1035369, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 21
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/21/1035382.json, query_params: fixtures/events?fixture=1035382, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 22
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/22/1035393.json, query_params: fixtures/events?fixture=1035393, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 23
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/23/1035396.json, query_params: fixtures/events?fixture=1035396, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 24
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/24/1035409.json, query_params: fixtures/events?fixture=1035409, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 25
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/25/1035419.json, query_params: fixtures/events?fixture=1035419, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 26
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/26/1035424.json, query_params: fixtures/events?fixture=1035424, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 27
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/27/1035439.json, query_params: fixtures/events?fixture=1035439, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 28
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/28/1035450.json, query_params: fixtures/events?fixture=1035450, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 29
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/29/1035455.json, query_params: fixtures/events?fixture=1035455, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 30
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/30/1035469.json, query_params: fixtures/events?fixture=1035469, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 31
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/31/1035483.json, query_params: fixtures/events?fixture=1035483, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 32
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/32/1035486.json, query_params: fixtures/events?fixture=1035486, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 33
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/33/1035500.json, query_params: fixtures/events?fixture=1035500, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 34
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/34/1035512.json, query_params: fixtures/events?fixture=1035512, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 35
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/35/1035520.json, query_params: fixtures/events?fixture=1035520, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 36
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/36/1035532.json, query_params: fixtures/events?fixture=1035532, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 37
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/37/1035537.json, query_params: fixtures/events?fixture=1035537, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 38
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/38/1035552.json, query_params: fixtures/events?fixture=1035552, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/progress_39_2023.json, query_params: fixtures?league=39&season=2023, range_season: {}
+2024-08-29 18:53 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_access, index: 3, value: get_games_goals, index: 4, value: get_detail_games
+2024-08-29 18:53 - DEBUG - Round: 1
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/1/1035045.json, query_params: fixtures/events?fixture=1035045, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 2
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/2/1035055.json, query_params: fixtures/events?fixture=1035055, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 3
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/3/1035062.json, query_params: fixtures/events?fixture=1035062, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 4
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/4/1035071.json, query_params: fixtures/events?fixture=1035071, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 5
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/5/1035077.json, query_params: fixtures/events?fixture=1035077, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 6
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/6/1035091.json, query_params: fixtures/events?fixture=1035091, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 7
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/7/1035100.json, query_params: fixtures/events?fixture=1035100, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 8
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/8/1035109.json, query_params: fixtures/events?fixture=1035109, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 9
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/9/1035120.json, query_params: fixtures/events?fixture=1035120, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 10
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/10/1035131.json, query_params: fixtures/events?fixture=1035131, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 11
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/11/1035146.json, query_params: fixtures/events?fixture=1035146, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 12
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/12/1035151.json, query_params: fixtures/events?fixture=1035151, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 13
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/13/1035300.json, query_params: fixtures/events?fixture=1035300, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 14
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/14/1035308.json, query_params: fixtures/events?fixture=1035308, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 15
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/15/1035323.json, query_params: fixtures/events?fixture=1035323, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 16
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/16/1035327.json, query_params: fixtures/events?fixture=1035327, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 17
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/17/1035338.json, query_params: fixtures/events?fixture=1035338, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 18
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/18/1035353.json, query_params: fixtures/events?fixture=1035353, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 19
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/19/1035359.json, query_params: fixtures/events?fixture=1035359, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 20
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/20/1035368.json, query_params: fixtures/events?fixture=1035368, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 21
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/21/1035379.json, query_params: fixtures/events?fixture=1035379, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 22
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/22/1035392.json, query_params: fixtures/events?fixture=1035392, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 23
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/23/1035399.json, query_params: fixtures/events?fixture=1035399, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 24
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/24/1035405.json, query_params: fixtures/events?fixture=1035405, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 25
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/25/1035419.json, query_params: fixtures/events?fixture=1035419, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 26
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/26/1035428.json, query_params: fixtures/events?fixture=1035428, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 27
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/27/1035434.json, query_params: fixtures/events?fixture=1035434, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 28
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/28/1035448.json, query_params: fixtures/events?fixture=1035448, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 29
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/29/1035454.json, query_params: fixtures/events?fixture=1035454, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 30
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/30/1035467.json, query_params: fixtures/events?fixture=1035467, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 31
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/31/1035480.json, query_params: fixtures/events?fixture=1035480, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 32
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/32/1035491.json, query_params: fixtures/events?fixture=1035491, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 33
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/33/1035498.json, query_params: fixtures/events?fixture=1035498, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 34
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/34/1035505.json, query_params: fixtures/events?fixture=1035505, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 35
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/35/1035515.json, query_params: fixtures/events?fixture=1035515, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 36
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/36/1035528.json, query_params: fixtures/events?fixture=1035528, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 37
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/37/1035540.json, query_params: fixtures/events?fixture=1035540, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - Round: 38
+2024-08-29 18:53 - DEBUG - download_and_save - current: status off, access: True, file_name: Statistic/39/2023/Rounds/38/1035548.json, query_params: fixtures/events?fixture=1035548, range_season: {'year': 2023, 'start': '2023-08-11', 'end': '2024-05-19', 'current': False}
+2024-08-29 18:53 - DEBUG - index: 0, value: Вышестоящие вызывающие функции:, index: 1, value: get_status, index: 2, value: get_error_message, index: 3, value: display_value, index: 4, value: add_context
