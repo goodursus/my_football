@@ -845,8 +845,8 @@ def get_fixture_league(league, season):
                                         'Statistic/' + str(league) + '/' + str(season) + '/progress_' + str(league) + '_' + str(season) + '.json', 
                                         'fixtures?league=' + str(league) + '&season=' + str(season), cash, check_zero = True, range_season = {})
         print('fixtures?league=' + str(league) + '&season=' + str(season) + ': ' + data_json[1])
-        if not access:
-            sys.exit()
+#        if not access:
+#            sys.exit()
         
         # Получаем текущее локальное время
 #        local_time = datetime.datetime.now()
