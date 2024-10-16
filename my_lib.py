@@ -25,11 +25,16 @@ import pytz
 import inspect
 import logging
 import detail_data as dd
+from dotenv import load_dotenv
+
 
 time_request  = 0
 count_request = 0
 current_count = 0
 range_season = {}
+
+load_dotenv()
+API_KEY = os.environ.get('MY_API_KEY')
 
 def setup_logger():
     logging.basicConfig(level = logging.DEBUG, 
@@ -182,7 +187,7 @@ def load_json(file_name, query_params, check_zero):
 
     headers = {
         'x-rapidapi-host': "v3.football.api-sports.io",
-        'x-rapidapi-key': "4305558161506f5f33e4b48f1a6745d5"
+        'x-rapidapi-key': API_KEY
     }
 
     conn.request("GET", "/" + query_params, headers = headers)
