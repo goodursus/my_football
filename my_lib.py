@@ -136,7 +136,7 @@ def get_status():
 
     headers = {
         'x-rapidapi-host': "v3.football.api-sports.io",
-        'x-rapidapi-key': "4305558161506f5f33e4b48f1a6745d5"
+        'x-rapidapi-key': API_KEY
     }
 
     conn.request("GET", "/" + "status", headers = headers)
@@ -152,7 +152,7 @@ def get_status():
     error = parsed_data["errors"]
     print('Request error? : ', error)
     subcall = ", ".join([f"index: {i}, value: {value}" for i, value in enumerate(sub_call())])
-    logging.debug(subcall)
+#    logging.debug(subcall)
 
     if len(error) == 0:
         current = parsed_data["response"]["requests"]["current"]
@@ -178,7 +178,7 @@ def load_json(file_name, query_params, check_zero):
 
     sleep_requests(True)
     subcall = ", ".join([f"index: {i}, value: {value}" for i, value in enumerate(sub_call())])
-    logging.debug(subcall)
+#    logging.debug(subcall)
 
     log_mes = ''
 
@@ -202,7 +202,7 @@ def load_json(file_name, query_params, check_zero):
     new_string = query_params.replace("/", "_").replace("?", "_").replace("=", "_").replace("&", "_")
 
     log_mes = f"load_json - file_name: {file_name}, query_params: {query_params}, check_zero: {check_zero}, result: {my_json_dict['results']}"
-    logging.debug(log_mes)
+#    logging.debug(log_mes)
 
 #    if my_json_dict['results'] > 0 or not check_zero:
     if my_json_dict['results'] > 0:
@@ -246,7 +246,7 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
 #    status = get_status()
 #    log_mes = f"download_and_save - current: {status[1]}, access: {access}, file_name: {file_name}, query_params: {query_params}, range_season: {range_season}"
     log_mes = f"download_and_save - current: status off, access: {access}, file_name: {file_name}, query_params: {query_params}, range_season: {range_season}"
-    logging.debug(log_mes)
+#    logging.debug(log_mes)
 
     try:
         if cash:

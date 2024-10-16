@@ -205,7 +205,7 @@ def get_games_goals(list_games, league, season, team, arr_type_events):
 
     for i in range(0,len(list_games)):
 
-        logging.debug('Round: ' + str(i + 1))
+#        logging.debug('Round: ' + str(i + 1))
 
         game_id = list_games[i]['Game_id']    
         
