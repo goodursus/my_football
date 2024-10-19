@@ -873,6 +873,9 @@ app = dash.Dash(__name__,
                 )
 #app = dash.Dash(__name__, suppress_callback_exceptions=True, prevent_initial_callbacks = 'initial_duplicate')
 
+# Flask сервер для Gunicorn
+server = app.server
+
 #app.layout = dbc.Container([
 app.layout = html.Div(children=[
 
@@ -1249,5 +1252,4 @@ def display_modal(selected_value):
     return False, "", ""
 
 if __name__ == '__main__':
-#    app.run_server(debug=True)
-    app.run_server(debug=True, host='0.0.0.0', port=10000)
+    app.run_server(debug=False, host='0.0.0.0', port=10000)
