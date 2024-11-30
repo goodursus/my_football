@@ -26,15 +26,18 @@ import inspect
 import logging
 import detail_data as dd
 from dotenv import load_dotenv
-
+import random
 
 time_request  = 0
 count_request = 0
 current_count = 0
 range_season = {}
+info_request = {'team': '', 'count': 0, 'round': 0, 'time': 0, 'delay': 0, 'count_delay': 0, 'request': 0, 'limit': 0, 'mes_error': ''}
+stop_signal = False  # Переменная для остановки функции обновления
 
 load_dotenv()
 API_KEY = os.environ.get('MY_API_KEY')
+
 
 def setup_logger():
     logging.basicConfig(level = logging.DEBUG, 
@@ -67,36 +70,44 @@ def sleep_requests(trace = False):
     global time_request
     global count_request
     global current_count
+    global info_request
 
     count_request = count_request + 1
     current_count = current_count + 1
     my_time = 0
 
-    if count_request == 1:
-#    if current_count == 1:
+    if current_count == 1:
         time_request = time.time()
+        current_time = datetime.fromtimestamp(time_request).strftime("%H:%M:%S")
+        print(f"Время первого запроса из 9-ти: {current_time}")
     else:
         my_time = int(time.time() - time_request)
 
     if trace:
         print("Время выполнения запросов:", my_time, "секунд")
-#        print("Количество запросов: " + str(current_count) + "/" + str(count_request) + "раз")
-        print(f"Количество запросов: {current_count}/{count_request} раз")
-    if count_request % 9 == 0:    
+        info_request['time'] = my_time
+        fix_time = time.strftime("%H:%M:%S")
+        print(f"Количество запросов: {current_count}/{count_request} раз. Время запроса: {fix_time}")
+        info_request['count'] = count_request
+    if current_count == 9:    
         if my_time < 60: 
             if trace:
-                print("Ожидание " + str(60 - my_time) + " секунд")
-            my_pause = 60 - my_time
+                print("Ожидание " + str(65 - my_time) + " секунд")
+                info_request['delay'] = 65 - my_time
+            my_pause = 65 - my_time
             for i in range(my_pause, 0, -1):
                 if trace:
                     print(f'Countdown: {i} seconds', end='\r')
                 time.sleep(1)
-                
-            time_request  = time.time()
-        else:    
-            time_request  = time.time()
-
+                info_request['count_delay'] = i
+            
+            info_request['count_delay'] = 0
+            info_request['delay'] = 0
+               
+        time_request  = time.time()
         current_count = 0
+
+    print('Info_request: ', info_request)
 
     return my_time
 
@@ -151,22 +162,24 @@ def get_status():
 
     error = parsed_data["errors"]
     print('Request error? : ', error)
-    subcall = ", ".join([f"index: {i}, value: {value}" for i, value in enumerate(sub_call())])
+#    subcall = ", ".join([f"index: {i}, value: {value}" for i, value in enumerate(sub_call())])
 #    logging.debug(subcall)
 
     if len(error) == 0:
         current = parsed_data["response"]["requests"]["current"]
         limit_day = parsed_data["response"]["requests"]["limit_day"]
-
+        info_request['limit_day'] = limit_day
+        info_request['request'] = current
         return True, current, limit_day
     else:
+        info_request['mes_error'] = error
         return error, 0, 0
 
 def get_error_code(query_params):
 
     new_string = query_params.replace("/", "_").replace("?", "_").replace("=", "_").replace("&", "_")
 
-    with open('Statistic/Errors/error_' + new_string + '.json') as my_file:
+    with open('Statistic/' + str(dd.country) + '/' + 'Errors/error_' + new_string + '.json') as my_file:
         data = json.load(my_file) 
 
     if 'endpoint' in data['errors']:
@@ -176,8 +189,10 @@ def get_error_code(query_params):
 
 def load_json(file_name, query_params, check_zero):
 
+    global info_request
+
     sleep_requests(True)
-    subcall = ", ".join([f"index: {i}, value: {value}" for i, value in enumerate(sub_call())])
+#    subcall = ", ".join([f"index: {i}, value: {value}" for i, value in enumerate(sub_call())])
 #    logging.debug(subcall)
 
     log_mes = ''
@@ -199,12 +214,10 @@ def load_json(file_name, query_params, check_zero):
     my_json      = data_json.decode('utf8')
     my_json_dict = json.loads(my_json)
 
+    info_request['request'] += 1
+
     new_string = query_params.replace("/", "_").replace("?", "_").replace("=", "_").replace("&", "_")
 
-    log_mes = f"load_json - file_name: {file_name}, query_params: {query_params}, check_zero: {check_zero}, result: {my_json_dict['results']}"
-#    logging.debug(log_mes)
-
-#    if my_json_dict['results'] > 0 or not check_zero:
     if my_json_dict['results'] > 0:
         with open(file_name, 'w') as f:
             f.write(my_json)
@@ -213,13 +226,13 @@ def load_json(file_name, query_params, check_zero):
     
     elif 'rateLimit' in my_json_dict:
         print('rateLimit')
-        with open('Statistic/Errors/error_'+ new_string + '.json', 'w') as f:
+        with open('Statistic/' + str(dd.country) + '/' + 'Errors/error_'+ new_string + '.json', 'w') as f:
             f.write(my_json)
         return False
     
     elif  my_json_dict['results'] == 0 and check_zero:
-        print('Look error in file: Statistic/Errors/error_'+ new_string + '.json')
-        with open('Statistic/Errors/error_'+ new_string + '.json', 'w') as f:
+        print('Look error in file: Statistic/' + str(dd.country) + '/' + 'Errors/error_'+ new_string + '.json')
+        with open('Statistic/' + str(dd.country) + '/' + 'Errors/error_'+ new_string + '.json', 'w') as f:
             f.write(my_json)
         return False
 
@@ -237,15 +250,28 @@ def get_access(cost):
 
     return access
 
-def download_and_save(access, file_name, query_params, cash = True, check_zero = True, range_season = {}):
+def test_load():
+
+    sleep_requests(True)
+
+    delay = random.randint(1, 10)  # Generate a random delay between 1 and 60 seconds
+    print(f"Delaying for {delay} seconds...")
+    for i in range(delay, 0, -1):
+        print(f'Countdown: {i} seconds', end='\r')
+        time.sleep(1)
+#    time.sleep(delay)  # Pause execution for the specified delay
+    print("Delay complete!")
+
+    return True
+
+def download_and_save(access, file_name, query_params, cash = True, check_zero = True, range_season = {}, only_new = False):
 
     message      = 'File downloaded.'
     file_outside = False
-#    today        = datetime.datetime.now().date()
     today        = datetime.now().date()
 #    status = get_status()
 #    log_mes = f"download_and_save - current: {status[1]}, access: {access}, file_name: {file_name}, query_params: {query_params}, range_season: {range_season}"
-    log_mes = f"download_and_save - current: status off, access: {access}, file_name: {file_name}, query_params: {query_params}, range_season: {range_season}"
+#    log_mes = f"download_and_save - current: status off, access: {access}, file_name: {file_name}, query_params: {query_params}, range_season: {range_season}"
 #    logging.debug(log_mes)
 
     try:
@@ -256,15 +282,8 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
                 # проверка на вчерашнюю дату файла
                 file_time = os.path.getmtime(file_name)
                 file_time = int(file_time)
-#                file_date = datetime.datetime.fromtimestamp(file_time).date()
                 file_date = datetime.fromtimestamp(file_time).date()
  
-                # Get yesterday's date and today's date
-#                if query_params == 'standings?league=39&season=2023':
-#                    yesterday = datetime.datetime.now().date()
-#                else:    
-#                    yesterday = datetime.datetime.now().date() - timedelta(days=365)
-
                 in_range = False
                 if len(range_season) == 0:
                     in_range = False
@@ -277,10 +296,16 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
                     elif today > data_end:
                         in_range = False
                 
+                if only_new:
+                    load = file_date < today and in_range
+                else:
+                    load = False
+
                 if access:    
-                    # Check if the file date is yesterday
-#                    if file_date <= yesterday:
-                    if file_date < today and in_range:
+                    if load:
+                        print('os.path.isfile(file_name) file_date < today and in_range')
+#                        if test_load():
+#                            message = 'TEST File downloaded.'
                         if load_json(file_name, query_params, check_zero):  
                             message = 'File downloaded.'
                             file_outside = True
@@ -297,6 +322,9 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
             else:
                 file_date = today
                 if access:    
+                    print('NOT os.path.isfile(file_name)')
+#                    if test_load():
+#                        message = 'TEST File downloaded.'
                     if load_json(file_name, query_params, check_zero):  
                         message = 'File downloaded.'
                         file_outside = True
@@ -309,9 +337,11 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
                 else:
                     return  '', 'Error file_date = today: Download limit reached. Unable to Download and Save File', file_outside, today
         else:
-#            file_date = datetime.datetime.now().date()
             file_date = datetime.now().date()
-            if access:    
+            if access: 
+                print('NOT cash')   
+#                if test_load():
+#                    message = 'TEST File downloaded.'
                 if load_json(file_name, query_params, check_zero):  
                     message = 'File downloaded.'
                     file_outside = True
@@ -328,6 +358,8 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
         # Read the contents of the file
         with open(file_name) as my_file:
             data = json.load(my_file) # вывод как словарь dict
+
+#        test_load()
 
         return data, message, file_outside, file_date
     
@@ -450,6 +482,7 @@ def empty_map_html():
     map_html = m.get_root().render()
     
     return map_html
+
 '''
 def zoom_country(country_name):
     
@@ -561,10 +594,10 @@ def marker_teams_map(m, x):
         return [m, bbox_team]
     #return m
 '''
-def get_standing(league, season):
-
+def get_standing(country, league, season):
     
-    data_json = download_and_save(True, 'Statistic/standing_' + league + '_' + season + '.json', 'standings?league=' + league + '&season=' + season, True, True, range_season)
+    only_new = True
+    data_json = download_and_save(True, 'Statistic/' + country + '/' + str(league) + '/' + str(season) + '/' + 'standing_' + league + '_' + season + '.json', 'standings?league=' + league + '&season=' + season, True, True, range_season, only_new)
 #    data = data_json['response'][0]['league']['standings'][0]
     data = data_json[0]['response'][0]['league']['standings'][0]
     
@@ -735,61 +768,64 @@ def get_standing(league, season):
 
     return result
 
-def build_directory(root, league, season, rounds):
+def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
     try:
-        path      = root
-        new       = 'Errors/'
-        full_path = os.path.join(path, new)
-
-        if not os.path.exists(full_path):
-            os.mkdir(full_path)
-#            print("Каталог Errors успешно создан.")
-#        else:
-#            print("Каталог Errors уже существует.")
-
-        path      = root
-        new       = str(league)
-        full_path = os.path.join(path, new)
-
-        if not os.path.exists(full_path):
-            os.mkdir(full_path)
-#            print("Каталог " + str(league) + " успешно создан.")
-#        else:
-#            print("Каталог " + str(league) + " уже существует.")
-
-        path      = root + str(league) + "/"
-        new       = str(season)
-        full_path = os.path.join(path, new)
-
-        if not os.path.exists(full_path):
-            os.mkdir(full_path)
-#            print("Каталог " + str(season) + " успешно создан.")
-#        else:
-#            print("Каталог " + str(season) + " уже существует.")
-
-        path      = root + str(league) + "/" + str(season) + "/"
-        new       = "Rounds"
-        full_path = os.path.join(path, new)
-
-        if not os.path.exists(full_path):
-            os.mkdir(full_path)
-#            print("Каталог Games успешно создан.")
-#        else:
-#            print("Каталог Games уже существует.")
-
-        path      = root + str(league) + "/" + str(season) + "/Rounds/"
-#        for round in range(1, rounds + 1):        
-        for round in range(1, rounds + 1):        
-            new       = str(round)
+        if 'root' in locals() and country:    
+            path      = root
+            new       = country
             full_path = os.path.join(path, new)
+
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
-#                print("Каталог " + new + " успешно создан.")
-#            else:
-#                print("Каталог " + new + " уже существует.")
+                print("Каталог " + str(country) + " успешно создан.")
+            else:
+                print("Каталог " + str(country) + " уже существует.")
 
-        return True
+            path      = root + str(country) + "/"
+            new       = 'Errors/'
+            full_path = os.path.join(path, new)
+
+            if not os.path.exists(full_path):
+                os.mkdir(full_path)
+                print("Каталог Errors успешно создан.")
+            else:
+                print("Каталог Errors уже существует.")
+
+            if league > 0:
+                path      = root + str(country) + "/"
+                new       = str(league)
+                full_path = os.path.join(path, new)
+
+                if not os.path.exists(full_path):
+                    os.mkdir(full_path)
+                    print("Каталог " + str(league) + " успешно создан.")
+                else:
+                    print("Каталог " + str(league) + " уже существует.")
+
+            if season > 0:
+                path      = root + str(country) + "/" + str(league) + "/"
+                new       = str(season)
+                full_path = os.path.join(path, new)
+
+                if not os.path.exists(full_path):
+                    os.mkdir(full_path)
+                    print("Каталог " + str(season) + " успешно создан.")
+                else:
+                    print("Каталог " + str(season) + " уже существует.")
+
+            if rounds > 0:
+                path      = root + str(country) + "/" + str(league) + "/" + str(season) + "/"
+                for round in range(1, rounds + 1):        
+                    new       = str(round)
+                    full_path = os.path.join(path, new)
+                    if not os.path.exists(full_path):
+                        os.mkdir(full_path)
+                        print("Каталог " + new + " успешно создан.")
+                    else:
+                        print("Каталог " + new + " уже существует.")
+
+            return True
 
     except OSError as e:
         return f"Ошибка при создании каталога: {e}"
@@ -832,18 +868,20 @@ def build_directory_0(root, league, season):
     except OSError as e:
         return f"Ошибка при создании каталога: {e}"
 
-def get_fixture_league(league, season):
+def get_fixture_league(country, league, season):
     
     count         = 0
     cash          = True
+    only_new      = True
+    check_zero    = True
 #    current_round = 0
 
     while True:
 #        access = get_access(1)
         access = True
         data_json = download_and_save(access, 
-                                        'Statistic/' + str(league) + '/' + str(season) + '/progress_' + str(league) + '_' + str(season) + '.json', 
-                                        'fixtures?league=' + str(league) + '&season=' + str(season), cash, check_zero = True, range_season = {})
+                                        'Statistic/' + country + '/' + str(league) + '/' + str(season) + '/' + 'progress_' + str(league) + '_' + str(season) + '.json', 
+                                        'fixtures?league=' + str(league) + '&season=' + str(season), cash, check_zero, range_season, only_new)
         print('fixtures?league=' + str(league) + '&season=' + str(season) + ': ' + data_json[1])
 #        if not access:
 #            sys.exit()

@@ -5,5 +5,8 @@
         "other": "inline",
         "comments": "off",
         "strings": "off"
-    }
+    },
+    "taipyStudio.gUI.elementsFilePaths": [],
+    "translateIt.targetLanguage": "Russian",
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

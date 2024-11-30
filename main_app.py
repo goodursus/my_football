@@ -1,5 +1,5 @@
 import dash
-from dash import html, dcc
+from dash import html, dcc, callback_context
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from plotly.subplots import make_subplots
@@ -20,18 +20,23 @@ import detail_data as dd
 import help as hlp
 import logging
 from datetime import datetime
+import os
+import time
+import threading
 
 my_status = []
 
-my_round = 0
-my_team  = 0
-my_game  = 0
-my_mode  = 1
-my_league = 0
-my_season = 0
-my_events = []
+my_round         = 0
+my_team          = 0
+my_game          = 0
+my_mode          = 1
+my_league        = 0
+my_season        = 0
+my_events        = []
 my_selected_team = []
-my_games = []
+my_games         = []
+my_country       = ''
+my_country_id    = 0
 
 total_rounds    = 1
 current_round   = 1
@@ -46,14 +51,24 @@ range_season = {}
 
 conditionals = []
 
+global_time_request = time.time()
+
+stop_signal   = True  # Переменная для остановки функции обновления
+current_team  = []
+
+incache = False
+
 #==========================================================
 def get_error_message():
+    
     global my_status
 
     my_status =  mb.get_status()
 
+    mb.info_request['request'] = my_status[1] 
+    mb.info_request['limit']   = my_status[2]
+
     if my_status[1] < my_status[2] - 5:
-#    if my_status:
         message = html.Div('Request: ' + str(my_status[1]) + '. Total: ' + str(my_status[2]),
                             style={
                                     'fontSize': '16px',  # Задаем размер шрифта
@@ -61,34 +76,44 @@ def get_error_message():
                             },
                             className='error-message'
                         )
+                        
     elif (my_status[1] + dd.count_games_load) > (my_status[2] - 5):
-        message = html.Div("If request wil be continue than limit used: Request: " + str(my_status[1]) + ", Planning count request: " +  str(dd.count_games_load) + ", Total: " + str(my_status[2]) + " ( You can only use data from previous requests in the cache).", 
+        text_message = "If request wil be continue than limit used: Request: " + str(my_status[1]) + ", Planning count request: " +  str(dd.count_games_load) + ", Total: " + str(my_status[2]) + " ( You can only use data from previous requests in the cache)."
+        message = html.Div(text_message, 
                             style={
                                     'fontSize': '20px',  # Задаем размер шрифта
                                     'color': 'red'  # Задаем цвет текста
                             },
                             className='error-message'
                         )
+        
+        mb.info_request['mes_error'] = text_message
+
     else:
-        message = html.Div("Request limit used: Request: " + str(my_status[1]) + ". Total: " + str(my_status[2] + " ( You can only use data from previous requests in the cache)."), 
+        text_message = "Request limit used: Request: " + str(my_status[1]) + ". Total: " + str(my_status[2] + " ( You can only use data from previous requests in the cache).")
+        message = html.Div(text_message, 
                             style={
                                     'fontSize': '20px',  # Задаем размер шрифта
                                     'color': 'red'  # Задаем цвет текста
                             },
                             className='error-message'
                         )
-    return message    
+        
+        mb.info_request['mes_error'] = text_message
+
+    info = get_info_message()
+    return info    
 
 def get_total_round(league, season):
     global total_rounds
     global season_is_ended 
 
-    cash  = True
+    cash     = True
 
 #    access = mb.get_access(1)
     access = True
     data_json = mb.download_and_save(access, 
-                                    'Statistic/' + str(league) + '/' + str(season) + '/total_round_' + str(league) + '_' + str(season) + '.json', 
+                                    'Statistic/' + str(my_country) + '/' + str(league) + '/' + str(season) + '/total_round_' + str(league) + '_' + str(season) + '.json', 
                                     'fixtures/rounds?league=' + str(league) + '&season=' + str(season), cash, True, range_season)
     print('fixtures/rounds?league=' + str(league) + '&season=' + str(season) + ':' + data_json[1])
     if not access:
@@ -125,33 +150,21 @@ def get_current_round(league, season):
         
         return current_round
     
-    count = 0
-    cash  = True
+    count      = 0
+    cash       = True
     check_zero = False
+    only_new   = True
 
     while True:
     #    access = mb.get_access(1)
         access = True
         data_json = mb.download_and_save(access, 
-                                        'Statistic/' + str(league) + '/' + str(season) + '/current_round_' + str(league) + '_' + str(season) + '.json', 
-                                        'fixtures/rounds?league=' + str(league) + '&season=' + str(season) + '&current=true', cash, check_zero, range_season)
+                                        'Statistic/' + str(my_country) + '/' + str(league) + '/' + str(season) + '/current_round_' + str(league) + '_' + str(season) + '.json', 
+                                        'fixtures/rounds?league=' + str(league) + '&season=' + str(season) + '&current=true', cash, check_zero, range_season, only_new)
         print('fixtures/rounds?league=' + str(league) + '&season=' + str(season) + '&current=true: ' + data_json[1])
         if not access:
             sys.exit()
-        '''        
-        # Получаем текущее локальное время
-        local_time = datetime.datetime.now()
 
-        # Определяем временную зону вашей локации
-        local_timezone = pytz.timezone('Australia/Sydney')  # Замените на вашу временную зону
-
-        # Преобразуем локальное время во временную зону GMT
-        gmt_time = local_time.astimezone(pytz.timezone('GMT'))
-
-        # Форматируем время в нужном формате
-        current_date = gmt_time.date()
-        '''
-#      today  current_date = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ") #Время местное, а в файле - по гринвичу - коллизия
         archive_date = data_json[3]
 
         if archive_date >= current_date or data_json[0]['results'] == 0:
@@ -167,13 +180,6 @@ def get_current_round(league, season):
             if count == 2:
                 break
     
-    # Получаем текущий раунд
-
-#    target_date = datetime.datetime(season, 7, 1).date()
-
-#    if current_date.year > season or current_date < target_date:
-#        current_round = total_rounds
-#    else:
     if data_json[0]['results'] == 0:
         current_round = total_rounds
     else:
@@ -187,19 +193,17 @@ def get_current_round(league, season):
 
 def get_info_stand(league, season):
 
+    global my_country
     global my_round
     global my_team
     global total_rounds
     global my_games
 
-#    data_json = mb.download_and_save(True, 
-#                                     'Statistic/' + str(league) + '/' + str(season) + '/progress_' + str(league) + '_' + str(season) + '.json', 
-#                                     'fixtures?league=' + str(league) + '&season=' + str(season))
-   
-    result_dict_0 = mb.build_directory_0("Statistic/", league, season)
-    if isinstance(result_dict_0, str):
-    #    print(result_dict)
-        exit(1)
+#    result_dict_0 = mb.build_directory_0("Statistic/", league, season)
+#    result_dict_0 = mb.build_directory("Statistic/", my_country, league, season)
+#    if isinstance(result_dict_0, str):
+#        print(result_dict)
+#        exit(1)
 
     total_rounds = get_total_round(league, season)
 #    print('total_rounds: ' + str(total_rounds))
@@ -207,12 +211,12 @@ def get_info_stand(league, season):
     current_round = get_current_round(league, season)
 #    print('current_round: ' + str(current_round))
 
-    result_dict = mb.build_directory("Statistic/", league, season, current_round)
+    result_dict = mb.build_directory("Statistic/", my_country, league, season, current_round)
     if isinstance(result_dict, str):
     #    print(result_dict)
         exit(1)
 
-    data_json = mb.get_fixture_league(league, season)
+    data_json = mb.get_fixture_league(my_country, league, season)
     
     data = pd.json_normalize(data_json[0]['response'],)
     
@@ -235,7 +239,6 @@ def get_info_stand(league, season):
 #            break
             continue
 
-#        if current_round < my_round or 'PST' in row['fixture.status.short'] or 'NS' in row['fixture.status.short']:
         if current_round < my_round:
             continue
         
@@ -371,7 +374,6 @@ def get_info_stand(league, season):
             else:
                 my_team = i['team_id']
                 my_team_list = list(filter(filter_by_team_id, my_list_round[my_round-2]))
-#                if math.isnan(i['for']): 
                 if not i['status']:
                     my_detail = {'team_id': my_team_list[0]['team_id'],
                                 'game_id':  i['game_id'],
@@ -405,15 +407,9 @@ def get_team_stand(team, list_round):
     my_team = int(team)
     result = []
     my_round = 1
-#    last_index = ''
-#    while my_round < total_rounds + 1:
     while my_round < current_round + 1:
-#        if my_round <= current_round:
         sorted_list = sort_dicts(list_round[my_round-1], ['points', 'diff'])
         index = index_of_dict_value(sorted_list, 'team_id', my_team) + 1
-#        last_index = index
-#        else:
-#            index = last_index
 
         my_round += 1
         result.append(index)
@@ -457,16 +453,13 @@ def get_team_info(team, list_round, info_list, data_progress):
     my_round = 1
     my_team = team
 
-#    for my_round in range(1, total_rounds + 1):
     for my_round in range(1, current_round + 1):
         list_game = list(filter(filter_by_team_id, list_round[my_round-1]))
-#        if not list_game: 
         if not list_game[0]['status']: 
             results_score.append("Match not played yet...")
             results_win.append(-1)
             results_team.append("Match not played yet...")
             results_score_value = "Match not played yet..."
-#            results_team.append(home + " - " + away + '<br>' + results_score_value)
         else:
             for item in list_game:
                 my_game = item['game_id']
@@ -478,19 +471,14 @@ def get_team_info(team, list_round, info_list, data_progress):
                     goals_home = i['goals_home'] 
                     goals_away = i['goals_away'] 
 
-#                    if math.isnan(goals_home) or math.isnan(goals_away):
-#                        results_score_value = "Match not played yet..."
-#                    else:
                     results_score_value = str(int(goals_home)) + ":" + str(int(goals_away))
 
                     results_team.append(home + " - " + away + '<br>' + results_score_value)
   
     df = pd.DataFrame({
-#        'x': list(range(1, total_rounds + 1)),
         'x': list(range(1, current_round + 1)),
         'y': data_progress,
         'name': results_team,
-#        'info': results_score,
         'win': results_win
     })
 
@@ -502,13 +490,13 @@ def assign_color(val):
     elif val == 1: return '#FFFF00' # Yellow 
     else: return '#000000' # Black (default)
 
-def set_standing_table(league, season):
+def set_standing_table(country, league, season):
 
     global app
     global conditionals
 
         # Вывод таблицы чемпионата
-    my_data = mb.get_standing(str(league), str(season))
+    my_data = mb.get_standing(country, str(league), str(season))
 
     base_colors = ['rgb(255, 255, 255)', 'rgb(220, 255, 220)', 'rgb(255, 220, 220)'] #Светлозеленый, Чуть темнее светлозеленого
     dark_colors = ['rgb(220, 220, 220)', 'rgb(170, 255, 170)', 'rgb(255, 170, 170)']  #Светлорозовый, Чуть темнее светлорозового
@@ -612,6 +600,7 @@ def set_standing_table(league, season):
 def set_team_graph(teams):
 
     global data_info_stand 
+    global my_team
 
     data          = data_info_stand    
     list_round    = data[0]
@@ -640,6 +629,7 @@ def set_team_graph(teams):
 
 
         data_progress = get_team_stand(team['name_id'], list_round)
+        my_team = team
         df = get_team_info(team['name_id'], list_round, info_list, data_progress)
         
         fig.add_trace(
@@ -773,6 +763,7 @@ def set_add_graph(teams):
     return                                 
 
 def set_list_team_graph(teams):
+
     global total_rounds
     global data_info_stand 
     global my_mode
@@ -786,8 +777,8 @@ def set_list_team_graph(teams):
         if len(teams) == 0:
             return ""
         else:
-#            return dd.get_detail(app, my_league, my_season, total_rounds, current_round, teams)
-            result = dd.set_detail(app, 
+            result = dd.set_detail(app,
+                                my_country,    
                                 my_league, 
                                 my_season, 
                                 total_rounds, 
@@ -820,12 +811,12 @@ def get_list_countries():
 
         return countries
 
-def get_list_leagues(parametr):
+def get_list_leagues(country):
 
-    if parametr == None:
+    if country == None:
         return []
     
-    data_json = mb.download_and_save(True, 'Statistic/leagues_' + parametr +'.json', 'leagues?country=' + parametr, True, True, range_season)
+    data_json = mb.download_and_save(True, 'Statistic/' + country + '/' + 'leagues_' + country +'.json', 'leagues?country=' + country, True, True, range_season)
     data = pd.json_normalize(data_json[0]['response'],)
     leagues = []
 
@@ -843,12 +834,12 @@ def get_list_leagues(parametr):
 
     return leagues
 
-def get_list_leagues_seasons(parametr):
+def get_list_leagues_seasons(country, parametr):
 
     if parametr == None:
         return []
 
-    data_json = mb.download_and_save(True, 'Statistic/leagues_' + parametr +'.json', 'leagues?id=' + parametr, True, True, range_season)
+    data_json = mb.download_and_save(True, 'Statistic/' + country + '/' + str(parametr) + '/' + 'leagues_' + parametr +'.json', 'leagues?id=' + parametr, True, True, range_season)
     data_leagues = pd.json_normalize(data_json[0]['response'][0]['seasons'],)
     data = data_leagues
     seasons = []
@@ -861,8 +852,133 @@ def get_list_leagues_seasons(parametr):
         
     return seasons
 
-#mb.setup_logger()
+def set_global_current_count():
+
+    global global_time_request
+    global stop_signal
+
+#    stop_signal = False
+
+    my_time = int(time.time() - global_time_request)
+    print('global my_time', my_time)
+    if my_time > 60:
+        mb.current_count = 0 
+        global_time_request = time.time()
+        print('Сброс current_count')
+
+ #mb.setup_logger()
+
+def get_info_message():
+
+    request     = f"today request: {mb.info_request['request']} from {mb.info_request['limit']}"
+    round       = f"round: {mb.info_request['round']}"
+    count       = f"count: {mb.info_request['count']}"
+    delay       = f"delay: {mb.info_request['delay']}"
+    count_delay = f"count delay: {mb.info_request['count_delay']}"
+    request     = f"request: {mb.info_request['request']} from {mb.info_request['limit']}"
+    mes_error   = f"error: {mb.info_request['mes_error']}"
+
+#    team = ''
+    team = 'My team'
+#    if current_team and mb.info_request['team'] != 'My team':
+#        team = [team for team in current_team if team["name_id"] == mb.info_request['team']][0]['name'] 
+
+    for i in current_team:
+        if mb.info_request['team'] != 'My team':
+            if i['name_id'] == mb.info_request['team']:
+                team = i['name']    
+
+    info =  [
+            dbc.Badge(request,     id = "output_request", color="primary", text_color="light", className="ms-1 fs-6 text"),
+            dbc.Badge(team,        id = "output_team", color="success", text_color="light", className="ms-1 fs-6 text"),
+            dbc.Badge(round,       id = "output_round", color="success", text_color="light", className="ms-1 fs-6 text"),
+            dbc.Badge(count,       id = "output_count", color="success", text_color="light", className="ms-1 fs-6 text"),
+            dbc.Badge(delay,       id = "output_delay", color="success", text_color="light", className="ms-1 fs-6 text"),
+            dbc.Badge(count_delay, id = "output_counr_delay", color="warning", text_color="black", className="ms-1 fs-5 text"),
+            dbc.Badge(mes_error,   id = "output_error", color="danger", text_color="black", className="ms-1 fs-6 text"),
+        ]       
+
+    return info
+
+def create_colored_dropdown(options_dict, folder_path):
+    
+    existing_folders = [f for f in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, f))]
+    
+    # Создаем список опций с стилизацией
+    formatted_options = []
+    for option in options_dict:
+        # Извлекаем название страны из значения label
+        country_name = option['value']
+        
+        # Проверяем наличие папки
+        is_folder_exists = country_name in existing_folders
+        
+        # Получаем оригинальный Span из label
+        original_span = option['label']
+        
+        # Создаем новый Span с измененным стилем
+        new_span = html.Span(
+            [
+                original_span.children[0],  # Изображение флага
+                html.Span(
+                    original_span.children[1].children,  # Текст названия страны
+                    style={
+                        'font-size': 15, 
+                        'padding-left': 10,
+                        'color': 'red' if is_folder_exists else 'black',
+                        'font-weight': 'bold' if is_folder_exists else 'normal'
+                    }
+                )
+            ],
+            style={'align-items': 'center', 'justify-content': 'center'}
+        )
+        
+        # Создаем новую опцию
+        new_option = {
+            'label': new_span,
+            'value': option['value']
+        }
+        
+        formatted_options.append(new_option)
+
+    return formatted_options
+
+def create_country_dropdown(options_dict, folder_path):
+    
+    existing_folders = [f for f in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, f))]
+    
+    # Создаем список опций с стилизацией
+    new_options = []
+    for option in options_dict:
+        # Извлекаем название страны из значения label
+        country_name = str(option['value'])
+        
+        # Проверяем наличие папки
+        is_folder_exists = country_name in existing_folders
+        
+        if is_folder_exists:
+            new_options.append(option)
+
+    return new_options
+
+# Функция для получения структуры папок
+def get_folder_structure(root_path):
+    folder_structure = {}
+    if os.path.exists(root_path):
+        for item in os.listdir(root_path):
+            item_path = os.path.join(root_path, item)
+            if os.path.isdir(item_path):
+                folder_structure[item] = [
+                    subfolder for subfolder in os.listdir(item_path)
+                    if os.path.isdir(os.path.join(item_path, subfolder))
+                ]
+    return folder_structure
+
 #logging.info("**********************  Start *******************")
+
+ROOT_PATH = "Statistic"  # Укажите путь к корневой папке
+folder_structure = get_folder_structure(ROOT_PATH)
+info_string = get_error_message()
 
 #app/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app = dash.Dash(__name__, 
@@ -874,12 +990,17 @@ app = dash.Dash(__name__,
 #app = dash.Dash(__name__, suppress_callback_exceptions=True, prevent_initial_callbacks = 'initial_duplicate')
 
 # Flask сервер для Gunicorn
-server = app.server
+#server = app.server
 
 #app.layout = dbc.Container([
-app.layout = html.Div(children=[
+app.layout = html.Div(children = [
 
-    html.Div(id = 'error-message', style = {'display': 'block'}, children = get_error_message()),
+    dcc.Interval(id = "interval", interval = 1000, n_intervals = 0, disabled = True), #init True
+#    html.Div(id = 'error-message', style = {'display': 'block'}, children = get_error_message()),
+    html.Div(id = 'error-message', children = [
+#        html.Span(id = 'output_info', children = get_info_message()), 
+        html.Span(id = 'output_info', children = info_string), 
+        ]),        
     
     dbc.Row([
             dbc.Col([
@@ -892,16 +1013,6 @@ app.layout = html.Div(children=[
                         ],
                         placeholder="Chose lenguage for help",
                         className="w-75 text-black shadow mt-3 ms-5 mb-3 bg-white rounded", # p-1
-#                        style     = {
-#                            'background-color': 'lightgreen',
-#                            'color': 'black',
-#                            'border': '2px solid #4CAF50',
-#                            'border-radius': '12px',
-#                            'font-size': '12px',
-#                            'font-weight': 'bold',
-#                            'box-shadow': '2px 2px 5px grey',
-#                            'transition': 'background-color 0.3s'
-#                        },
                     ),
                     
                     dbc.Modal(
@@ -915,18 +1026,28 @@ app.layout = html.Div(children=[
                     ),
                 ]),
                 html.Div([
+                    # Переключатель Да-Нет
+                    html.Div([
+#                        html.Label("Already exists: "),
+                        dbc.Switch(
+                                id    = "exists-radio",
+                                label = "Already in cache: ",
+                                value = False,
+                    )]),    
+
                     html.P("Country"),
                     dcc.Dropdown(
                         id        = "select_country",
-                        options   = get_list_countries(),
-                        value     = 'England',
+#                        options   = get_list_countries(),
+                        options   = create_colored_dropdown(get_list_countries(), 'Statistic'),
+#                        value     = 'England',
 #                        value     = 'Ukraine',
                         clearable = False
                     ),
                     html.P("League"),
                     dcc.Dropdown(
                         id        = "select_league",
-                        value     = 39,
+#                        value     = 39,
 #                        value     = 333,
                         clearable = False
                     ),
@@ -935,7 +1056,7 @@ app.layout = html.Div(children=[
                     dcc.Dropdown(
                         id = "select_season",
 #                                   placeholder = 'Выберите сезон.',
-                                   value = 2024
+#                                   value = 2024
                     )
                 ],
                     style = {
@@ -966,58 +1087,102 @@ app.layout = html.Div(children=[
     dd.init_detail(app)
 ])
 
+# Callback для обновления списка стран
+@app.callback(
+    Output('select_country', 'options'),
+    [Input('exists-radio', 'value')]
+)
+def update_country_dropdown(exists):
+
+    global incache
+
+    if exists:
+        incache = True
+        # Показываем только существующие папки
+        return create_country_dropdown(get_list_countries(), 'Statistic')
+    else:
+        incache = False
+        # Показываем все страны
+        return create_colored_dropdown(get_list_countries(), 'Statistic')
+
 @app.callback(
     Output('select_league', 'options'),
-    Output('error-message', 'children', allow_duplicate = True),
     Input('select_country', 'value'),
     prevent_initial_call='initial_duplicate'
     )
-
 def set_country_options(selected_country): # формируем список лиг выбранной страны
     global my_status
+    global stop_signal
+    global my_country
+    global incache
 
-    message = get_error_message()
+#    message = get_error_message()
 
     if selected_country == None:
         raise PreventUpdate
 
     if my_status[0]:
-        list_leagues = get_list_leagues(selected_country)
+        set_global_current_count()
+        result_dict = mb.build_directory("Statistic/", selected_country)
+        if isinstance(result_dict, str):
+            print(result_dict)
+            exit(1)
+
+        if incache:
+            # Показываем только существующие папки
+            list_leagues = create_country_dropdown(get_list_leagues(selected_country), 'Statistic/' + selected_country)
+        else:
+           # Показываем все страны
+            list_leagues = create_colored_dropdown(get_list_leagues(selected_country), 'Statistic/' + selected_country)
+
+#        list_leagues = get_list_leagues(selected_country)
+        mb.info_request['team'] = 'My team'
+        my_country = selected_country
     else:
         list_leagues = []
   
-    return list_leagues, message
+#    return list_leagues, message
+    return list_leagues
 
 @app.callback(  #select_league
-#    Output('select_season', 'options', allow_duplicate=True),
     Output('select_season', 'options'),
     Output('select_season', 'value'),
-    Output('error-message', 'children', allow_duplicate = True),
     Input('select_league', 'value'),
     prevent_initial_call='initial_duplicate'
     )
-
 def set_leagues_options(selected_league): # подготовка списка сезонов выборанной лиги
     global my_status
+    global stop_signal
 
-    message = get_error_message()
-    
     if selected_league == None:
         raise PreventUpdate
 
     if my_status[0]:
         str_league = str(selected_league)
-        list_season = get_list_leagues_seasons(str_league)
+        set_global_current_count()
+        result_dict = mb.build_directory("Statistic/", my_country, selected_league)
+        if isinstance(result_dict, str):
+            print(result_dict)
+            exit(1)
+
+        if incache:
+            # Показываем только существующие папки
+            list_season = create_country_dropdown(get_list_leagues_seasons(my_country, str_league), 'Statistic/' + my_country + '/' + str_league)
+        else:
+           # Показываем все страны
+            list_season = create_colored_dropdown(get_list_leagues_seasons(my_country, str_league), 'Statistic/' + my_country + '/' + str_league)
+
+#        list_season = get_list_leagues_seasons(my_country, str_league)
+#        stop_signal = True
         sorted_options = sorted(list_season, key=lambda x: x['label'], reverse=True)
     else:
         sorted_options = []
 
-    return sorted_options, None, message
+    return sorted_options, None
     
 @app.callback(
     Output('standing', 'children'), 
     Output('mode',     'children'), 
-    Output('error-message', 'children', allow_duplicate = True),
     Input('select_season', 'value'),
     State('select_country', 'value'),
     State('select_league', 'value'),
@@ -1026,24 +1191,33 @@ def set_leagues_options(selected_league): # подготовка списка с
 def update_graph(select_season, country, select_league):
     global total_rounds
     global data_info_stand
+    global my_country
     global my_league
     global my_season
     global my_status
     global range_season
+    global stop_signal
+    global my_selected_team
 
+    my_selected_team = []
+    
     if select_season == None:
-#        return dbc.Container([])
         raise PreventUpdate
 
-    range_season = mb.get_rang_season('Statistic/leagues_' + str(select_league) +'.json', select_season)
+    result_dict = mb.build_directory("Statistic/", country, select_league, select_season)
+    if isinstance(result_dict, str):
+        print(result_dict)
+        exit(1)
 
-    my_league = select_league
-    my_season = select_season
+    set_global_current_count()
+    range_season = mb.get_rang_season('Statistic/' + country + '/' + str(select_league) + '/' + 'leagues_' + str(select_league) +'.json', select_season)
 
-    message = get_error_message()
+    my_country = country
+    my_league  = select_league
+    my_season  = select_season
 
     if my_status[0]:
-        standing = set_standing_table(str(select_league), str(select_season))
+        standing = set_standing_table(country, str(select_league), str(select_season))
 
         mode =  html.Div([
                     dbc.RadioItems(
@@ -1056,7 +1230,6 @@ def update_graph(select_season, country, select_league):
                         ],
                         value = 1,
                     )],
-#                        className="vstack gap-3",
                         style = {
                             'border': '1px solid black',
                             'backgroundColor': '#f2f2f2',
@@ -1073,9 +1246,9 @@ def update_graph(select_season, country, select_league):
     else:
         standing = dbc.Container([])
     
-#    standing = set_standing_table(str(select_league), str(select_season))
+#    stop_signal = True
 
-    return standing, mode, message
+    return standing, mode
 
 @app.callback(
     Output('my-table', 'selected_rows'),
@@ -1091,6 +1264,8 @@ def process_selected_rows(active_cell, selected_rows, style_data_conditional, ro
 
     global my_selected_team
     global conditionals
+    global stop_signal
+    global current_team
 
     my_graph = None
     
@@ -1127,19 +1302,19 @@ def process_selected_rows(active_cell, selected_rows, style_data_conditional, ro
                     selected_item = {key: item[key] for key in selected_keys}
                     selected_team.append(selected_item)
             output_text = f"You selected {len(selected_data)} rows:\n"
-            
+            current_team = selected_team
+
+            set_global_current_count()
             my_graph = set_list_team_graph(selected_team)
+#            stop_signal = True
             my_selected_team = selected_team
 
-#            return selected_rows, updated_style_data_conditional, output_text, my_graph
             return selected_rows, conditionals, my_graph
         
         else:
             
-#            return selected_rows, updated_style_data_conditional, "No rows selected", my_graph
             return selected_rows, conditionals, my_graph
     
-#    return selected_rows, style_data_conditional, "", my_graph
     return selected_rows, conditionals, my_graph
 
 @app.callback(
@@ -1159,61 +1334,53 @@ def display_value(value):
     global my_selected_team
     global total_rounds 
     global current_round
+    global stop_signal
 
     my_mode = value
     if my_mode == 1:
 
-#        data = get_info_stand(str(my_league), str(my_season)) 
-#        data_info_stand = get_info_stand(my_league, my_season) 
+#        stop_signal = False
+#        stop_signal = True
+#        print('stop_signal False Input("radios", "value"): ', value)
+        set_global_current_count()
         my_graph = set_list_team_graph(my_selected_team)
+#        stop_signal = True
+#        print('stop_signal False Input("radios", "value"): ', value)
         message = 'Displaying the movement of teams in the ranking by rounds'
 
         return message, my_graph, '', get_error_message()
-#        return result, my_graph
 
     elif my_mode == 2:
 
-#        my_total_rounds = get_total_round(my_league, my_season)
-#        my_current_round = get_current_round(my_league, my_season)
-
-#        my_selected_team =  [
-#                            {'name_id': 50, 'name': 'Manchester City'}, 
-#                            {'name_id': 49, 'name': 'Chelsea'}, 
-#                            {'name_id': 33, 'name': 'Manchester United'}, 
-#                            {'name_id': 42, 'name': 'Arsenal'}, 
-#                            {'name_id': 47, 'name': 'Tottenham'},
-#                            {'name_id': 40, 'name': 'Liverpool'},	 	
-#                            {'name_id': 3615, 'name': 'Chernomorets'}, 
-#                            {'name_id': 550, 'name': 'Shakhtar Donetsk'},
-#                            {'name_id': 572, 'name': 'Dynamo Kyiv'},
-#                            ]
-
-#        if  total_rounds != my_total_rounds and current_round != my_current_round:
-
-#        total_rounds  = my_total_rounds
-#        current_round = my_current_round
-
-        my_graph = dd.set_detail(app, 
+        stop_signal = False
+        print('stop_signal False Input("radios", "value"): ', value)
+        set_global_current_count()
+        my_graph = dd.set_detail(app,
+                                my_country, 
                                 my_league, 
                                 my_season, 
                                 total_rounds, 
                                 current_round, 
                                 my_selected_team)
+#        stop_signal = True
+#        print('stop_signal True Input("radios", "value"): ', value)
         
         message = 'When teams scored and conceded in rounds.'  
 
         if isinstance(my_graph, bool):
             if not my_graph:
+                stop_signal = True
+                print('stop_signal True Input("radios", "value"): ', value)
                 return message, '', '', get_error_message()
 
         else:
+            stop_signal = True
+            print('stop_signal True Input("radios", "value"): ', value)
             return message, my_graph, '', get_error_message()
 
     else:
         result = 'Other statistics'          
-#    return f"Selected value: {value}"
     return result, '', ''
-#    return result, ''
 
 # HELP, HELP
 @app.callback(
@@ -1221,10 +1388,8 @@ def display_value(value):
     Output('modal-header', 'children'),
     Output('modal-body',   'children'),
     Input('dropdown',      'value'),
-#    Input('close-modal', 'n_clicks'),
     prevent_initial_call = True
 )
-#def display_modal(selected_value, close_click):
 def display_modal(selected_value):
     ctx = dash.callback_context
     if not ctx.triggered:
@@ -1236,21 +1401,55 @@ def display_modal(selected_value):
     if selected_value == 'item1':
         header = "Help"
         body = html.Div([hlp.create_help_en()
-#            html.P("Это информация для пункта 1"),
-#            html.Img(src="https://via.placeholder.com/150", style={"width": "100%"})
         ])
         return True, header, body
     
     elif selected_value == 'item2':
         header = "Помощь"
         body = html.Div([hlp.create_help_ru()
-#            html.P("Это информация для пункта 2"),
-#            html.Img(src="https://via.placeholder.com/150", style={"width": "100%"})
         ])
         return True, header, body
 
     return False, "", ""
 
+@app.callback(
+    Output("error-message", "children", allow_duplicate = True),
+    Output("interval", "disabled"),
+    Input("radios", "value"),
+    Input("interval", "n_intervals"),
+    prevent_initial_call = True,
+)
+def manage_counter(n_clicks, n_intervals):
+    global stop_signal
+
+    # Определяем, какой input вызвал колбэк
+    triggered_id = callback_context.triggered[0]["prop_id"]
+    print('triggered_id: ', triggered_id)
+    print('triggered_id stop_signal: ', stop_signal)
+
+    info = get_info_message()
+
+    # Если запуск от кнопки
+    if triggered_id == "radios.value":
+        if not stop_signal:
+            print('Пришел сигнал СТАРТ: ', stop_signal)
+            return info, False  # Активируем interval
+#        return '', True  # Blocking interval
+
+    # Если запуск от interval
+#    if stop_signal and mb.info_request['count_delay'] == 0:
+    if stop_signal:
+        print('Пришел сигнал СТОП: ', mb.info_request['count_delay'])
+#        info = get_info_message()
+        return info, True  # Останавливаем interval
+    
+    print('Здесь должен быть вывод на экран mb.info_request:', mb.info_request)
+#    info = get_info_message()
+    
+    return info, False 
+#    return info, True 
+
 if __name__ == '__main__':
-#    app.run_server(debug=False, host='0.0.0.0', port=10000)
-    app.run_server(debug=False, host='0.0.0.0')
+#    app.run_server(debug = False) # Для отладки
+    app.run_server(debug = False, host = '0.0.0.0')
+#    app.run_server(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 8050)))

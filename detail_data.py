@@ -31,9 +31,11 @@ import numpy as np
 import itertools
 import re
 import logging
+import copy
 
-league = 0
-season = 0
+country       = ''
+league        = 0
+season        = 0
 total_rounds  = 0
 current_round = 1
 errors        = False
@@ -74,6 +76,7 @@ all_marker_opacity_extra_goal            = []
 all_marker_opacity_majority_scored       = []
 all_marker_opacity_minority_scored       = []
 
+nochange_opacity = []
 opacity      = []
 extra_events = []
 
@@ -96,7 +99,9 @@ range_season = {}
 
 count_games_load = 0
 
-def get_list_games(league, season, team):
+global_time_request = time.time()
+
+def get_list_games(country, league, season, team):
 
     global current_round
 
@@ -104,7 +109,7 @@ def get_list_games(league, season, team):
 
     current_date = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    data_json = mb.get_fixture_league(league, season)        
+    data_json = mb.get_fixture_league(country, league, season)        
 
     if type(data_json[0]) == str: 
 #        print(data_json[0])
@@ -147,16 +152,6 @@ def get_list_games(league, season, team):
             round['Round'] = int(re.findall(r'\d+', round['Round'])[0])
 
         results_round = sorted(merged_results, key=lambda x: x["Round"])
-
-#    last_round = max(results_round, key=lambda x: x['Round'])['Round']
-#    if last_round > current_round:
-#        current_round = last_round
-#        result_dict = mb.build_directory("Statistic/", league, season, current_round)
-#        if isinstance(result_dict, str):
-#        #    print(result_dict)
-#            exit(1)
-##    else:
-##        current_round = last_round
 
     return results_round
 
@@ -215,7 +210,7 @@ def get_games_goals(list_games, league, season, team, arr_type_events):
 
         while True:
             data_json_goal = mb.download_and_save(access, 
-                                                'Statistic/' + str(league) + '/' + str(season) + '/Rounds/' + str(i+1) + '/' + str(game_id) + '.json', 
+                                                'Statistic/' + str(country) + '/' + str(league) + '/' + str(season) + '/' + str(i+1) + '/' + str(game_id) + '.json', 
                                                 'fixtures/events?fixture=' + str(game_id), cash, check_zero, range_season)
 #            print('fixtures/events?fixture=' + str(game_id) + ': ' + data_json_goal[1])
 
@@ -251,24 +246,8 @@ def get_games_goals(list_games, league, season, team, arr_type_events):
         
 #        print('current_time: ' + str(current_time))
         print('round: ' + str(i + 1))
-
-        '''
-        # проверка количества итераций в течение одной минуты
-        if data_json_goal[2]: # file from outside
-            if iteration_count < max_iteration:
-                delay = (time_limit - current_time)
-                print('delay: ' + str(delay))
-                if delay > 0:
-                    time.sleep(delay)
-                    start_time  = time.time()
-                    print('delay.........')
-            else:
-                iteration_count = 0
-                start_time      = time.time()
-                max_iteration   = 10
-                time_limit      = max_time/max_iteration
-                print('reset iteration count.....')
-        '''
+        mb.info_request['round'] = i + 1
+        mb.info_request['team'] = team
 
         #get detail data
         detail_text = '''Time:     time.elapsed, 
@@ -364,6 +343,8 @@ def get_games_goals(list_games, league, season, team, arr_type_events):
                 my_detail.append(empty_detail)
 
         data_card.append(my_detail)
+
+    print('Info_request: ', mb.info_request)
 
     return data_detail, data_card
 #    return detail_for_type_scored, detail_for_type_missed, current_dimension
@@ -515,7 +496,6 @@ def find_duplicate_indices_xaxis(map, marker_symbol, y_values, dim):
     count = 1
     
     delta = 0.1
-#    x_axis = [list(range(1, current_round + 1))] * len(y_values) изменяется весь столбец
     x_axis = [[i+1 for i in range(current_round)] for _ in range(len(y_values))]
 
     x_values  = [x for x in range(1, current_round + 1)]
@@ -553,12 +533,8 @@ def find_duplicate_indices_xaxis(map, marker_symbol, y_values, dim):
             if element:
                 for duble in element:
                     count = len(duble) - 1
-#                    array = [round((-count + 1) * 2 * delta + d * delta * 4, 2) for d in range(count)]
-#                    array = [round(((-count + 1) * 2 * delta + d * delta * 4) * current_round/total_rounds, 2) for d in range(count)]
                     array = [round(i * delta * current_round/total_rounds, 2) for i in range(-count, count+1, 2)]
                     for k, row in enumerate(duble):
-#                        print('i: ' + str(i) + ' k: ' + str(k))
-#                        x_axis[row + event][i] = x_axis[row + event][i] + array[k]
                         x_axis[row + event][i] = x_values[i] + array[k]
 
     return x_axis
@@ -734,21 +710,19 @@ def get_count_games_online(count_games, list_games, league, season, root):
         #for i in range(2):
         game_id = list_games[i]['Game_id']   
 
-        path      = root + '/' + str(league) + '/' + str(season) + '/Rounds/' + str(i + 1) + '/' + str(game_id) + '.json'
+        path      = root + '/' + str(country) + '/' + str(league) + '/' + str(season) + '/' + str(i + 1) + '/' + str(game_id) + '.json'
         if not os.path.isfile(path):
             count_games += 1    
 
     return count_games
 
-def get_detail_games(league, season, sorted_team_list):
+def get_detail_games(country, league, season, sorted_team_list):
 
     global total_rounds
     global current_round
     global fig
     global scored_majority
     global scored_minority
-#    global missed_majority
-#    global missed_minority
     global arr_type_events
     global team_dimension
     global team_arr
@@ -769,12 +743,17 @@ def get_detail_games(league, season, sorted_team_list):
     global all_marker_opacity_minority_scored  
 
     global opacity 
+    global nochange_opacity
     global extra_events 
+    global y_value_all
 
-#    result_dict = mb.build_directory("Statistic/", league, season, current_round)
-#    if isinstance(result_dict, str):
-##    #    print(result_dict)
-#        exit(1)
+    global count_games_load 
+
+    # Initializaion
+    extra_events   = []
+    team_arr       = []
+    team_dimension = []
+    y_value_all    = []
 
     y_goals = []
     y_cards = []
@@ -831,12 +810,14 @@ def get_detail_games(league, season, sorted_team_list):
     annotations_stat  = []
     annotations_all   = []
 
+    count_games_load = 0 
+
     for t, teams in enumerate(sorted_team_list):
 
         team      = teams['name_id']
 
         start_time = time.time()
-        data_detail = get_list_games(league, season, team)
+        data_detail = get_list_games(country, league, season, team)
         end_time = time.time()
         execution_time = end_time - start_time
         print("Время выполнения get_list_games:", execution_time, "секунд")
@@ -1632,8 +1613,10 @@ def get_detail_games(league, season, sorted_team_list):
     opacity_other.append(all_marker_opacity_subst)                 
     opacity_other.append(all_marker_opacity_var)
     
+    opacity = []
     opacity.append(opacity_goal)
     opacity.append(opacity_other)
+    nochange_opacity = copy.deepcopy(opacity)
 
     annotations_all.extend(annotations_stat)
 #    fig.update_layout(annotations = annotations_all)
@@ -2276,7 +2259,8 @@ def get_detail_games(league, season, sorted_team_list):
     # Tracing
 
     # НЕ УДАЛЯТЬ Uploads dumps НЕ УДАЛЯТЬ **************************
-    
+    # НЕ УДАЛЯТЬ Uploads dumps НЕ УДАЛЯТЬ **************************
+    # НЕ УДАЛЯТЬ Uploads dumps НЕ УДАЛЯТЬ **************************
     ''' 
     my_dict = {'y_goals'    : y_goals, 
                'y_cards'    : y_cards, 
@@ -2293,6 +2277,8 @@ def get_detail_games(league, season, sorted_team_list):
 
     upload_dump(fig, sorted_team_list, my_dict)
     '''
+    # НЕ УДАЛЯТЬ Uploads dumps НЕ УДАЛЯТЬ **************************
+
     # Tracing
     end_time = time.time()
     execution_time = end_time - start_time
@@ -2715,7 +2701,7 @@ def update_opacity(fig, slider_range, dim, event, full):
                             my_item.append(item)            
                     
                     my_sub_arr.append(my_item)
-
+                
                 my_sub_opacity.append(my_sub_arr)
 
             my_opacity.append(my_sub_opacity)
@@ -2771,6 +2757,8 @@ def init_detail(app):
         global team_dimension
         global team_arr 
         global y_value_all
+
+        global opacity
 
         start_time = time.time()
 #        if n_clicks == None:
@@ -2838,6 +2826,7 @@ def init_detail(app):
             # Tracing
 
     #        fig = update_annotations(fig, slider_range, team_dimension, sorted_team_list, team_arr, y_value_all, symbol_marker_goals)
+            opacity = copy.deepcopy(nochange_opacity)
             update_annotations(fig, slider_range, team_dimension, sorted_team_list, team_arr, y_value_all, symbol_marker_goals)
             # Tracing
             end_time = time.time()
@@ -2864,7 +2853,6 @@ def init_detail(app):
             return fig
         else:
             return upd_fig
-
 
     @app.callback(
         Output('graph',          'figure',    allow_duplicate = True),
@@ -2907,12 +2895,32 @@ def init_detail(app):
                                 font          = dict(color = "white"),
                                 xaxis         = dict(tickfont = dict(color="white")))
 
-        return fig, new_class_name, new_class_name, new_class_name, new_class_name, new_name
+            return fig, new_class_name, new_class_name, new_class_name, new_class_name, new_name
 
-    return graph
+        return graph
 
-def set_detail(app, my_league, my_season, my_total_rounds, my_current_round, my_sorted_team_list):
+def set_global_current_count():
 
+    global global_time_request
+
+    mb.stop_signal = False
+
+    my_time = int(time.time() - global_time_request)
+    print('global my_time', my_time)
+    if my_time > 60:
+        mb.current_count = 0 
+        global_time_request = time.time()
+        print('Сброс current_count')
+
+# Функция для фоново обновления счетчика
+def background_counter():
+  
+    while not mb.stop_signal:
+        time.sleep(1)  # Имитация задержки для обновления
+
+def set_detail(app, my_country, my_league, my_season, my_total_rounds, my_current_round, my_sorted_team_list):
+
+    global country
     global league
     global season
     global total_rounds
@@ -2923,6 +2931,7 @@ def set_detail(app, my_league, my_season, my_total_rounds, my_current_round, my_
     global fig
     global fig_height
 
+    country          = my_country
     league           = my_league
     season           = my_season
     total_rounds     = my_total_rounds
@@ -2930,7 +2939,7 @@ def set_detail(app, my_league, my_season, my_total_rounds, my_current_round, my_
     sorted_team_list = my_sorted_team_list
 
     start_time = time.time()
-    fig = get_detail_games(league, season, sorted_team_list)
+    fig = get_detail_games(country, league, season, sorted_team_list)
     if isinstance(fig, bool):
         if not fig:
             return fig
@@ -2938,8 +2947,11 @@ def set_detail(app, my_league, my_season, my_total_rounds, my_current_round, my_
     end_time = time.time()
     execution_time = end_time - start_time
     print("Время выполнения get_detail_games:", execution_time, "секунд")
-
+    print('info_request: ', mb.info_request)
+ 
     graph = html.Div(children = [
+#        dcc.Interval(id="interval", interval=1000, n_intervals=0, disabled=True),
+#        html.Div(id="intermediate-output"),
         dbc.Row([
             dbc.Col([
                 html.Div([
