@@ -990,7 +990,7 @@ app = dash.Dash(__name__,
 #app = dash.Dash(__name__, suppress_callback_exceptions=True, prevent_initial_callbacks = 'initial_duplicate')
 
 # Flask сервер для Gunicorn
-#server = app.server
+server = app.server
 
 #app.layout = dbc.Container([
 app.layout = html.Div(children = [
