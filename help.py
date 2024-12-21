@@ -7,7 +7,8 @@ def create_help_en():
     return html.Div([
         html.P('This is the first paragraph.'),
         html.P('This is the second paragraph.'),
-        html.Img(src = image_path, style={"width": "100%"}),
+        html.Video(src = '/assets/help.mp4', controls = True, style = {"width": "100%"}),  # Вставка видео
+#        html.Img(src = image_path, style={"width": "100%"}),
 #        html.Img(src = image_path, style={'width': '500px', 'height': '500px'}),
         html.P('This is the third paragraph.')
     ])
