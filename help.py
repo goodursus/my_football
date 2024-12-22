@@ -2,19 +2,21 @@ import dash
 from dash import html
 
 def create_help_en():
-    image_path = '/assets/help_1.jpg'  # Replace with the actual path to your local image file
 
     return html.Div([
-        html.P('This is the first paragraph.'),
-        html.P('This is the second paragraph.'),
+        html.H4("Description of the interface", className="card-title"),
+        html.H6("Request limits", className="card-subtitle"),
+        html.P('At the moment, data requests are not subject to payment.'),
+        html.P('In connection with this, there is a limit of 100 requests per day and no more than 10 requests per minute.'),
+        html.P('Some information on already executed requests may be cached.'),
+        html.P('If there is no information in the cache and 10 requests are executed in less than 60 seconds,'),
+        html.P('for example, in 15 seconds, then a delay in loading is activated for the remaining 45 seconds.'),
+        html.P('In this case, loading fresh information may take quite a long time.'),
+        html.P('Current information on the status of requests is displayed in the top line in the left corner of the screen.'),
         html.Video(src = '/assets/help.mp4', controls = True, style = {"width": "100%"}),  # Вставка видео
-#        html.Img(src = image_path, style={"width": "100%"}),
-#        html.Img(src = image_path, style={'width': '500px', 'height': '500px'}),
-        html.P('This is the third paragraph.')
     ])
 
 def create_help_ru():
-    image_path = '/assets/help_1.jpg'  # Replace with the actual path to your local image file
 
     return html.Div([
         html.H4("Описание интерфейса", className="card-title"),
@@ -26,12 +28,5 @@ def create_help_ru():
         html.P('например, за 15 секунд, то включается задержка выполнения загрузки на оставшиеся 45 секунд.'),
         html.P('В таком случае загрузка свежей информации может занять довольно продолжительное время.'),
         html.P('Текущая информация по состоянию запросов отражается в верхней строке в левом углу экрана.'),
-        html.P(''),
-        html.P(''),
-        html.H6("Пояснение обозначений событий на графиках", className="card-subtitle"),
-        html.P(''),
-        html.P(''),
-        html.Img(src = image_path, style={"width": "100%"}),
-#        html.Img(src = image_path, style={'width': '500px', 'height': '500px'}),
-        html.P('This is the third paragraph.')
+        html.Video(src = '/assets/help.mp4', controls = True, style = {"width": "100%"}),  # Вставка видео
     ])
