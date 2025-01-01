@@ -161,7 +161,7 @@ def get_status():
     parsed_data = json.loads(my_json)
 
     error = parsed_data["errors"]
-    print('Request error? : ', error)
+#    print('Request error? : ', error)
 #    subcall = ", ".join([f"index: {i}, value: {value}" for i, value in enumerate(sub_call())])
 #    logging.debug(subcall)
 
@@ -303,7 +303,7 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
 
                 if access:    
                     if load:
-                        print('os.path.isfile(file_name) file_date < today and in_range')
+#                        print('os.path.isfile(file_name) file_date < today and in_range')
 #                        if test_load():
 #                            message = 'TEST File downloaded.'
                         if load_json(file_name, query_params, check_zero):  
@@ -322,7 +322,7 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
             else:
                 file_date = today
                 if access:    
-                    print('NOT os.path.isfile(file_name)')
+#                    print('NOT os.path.isfile(file_name)')
 #                    if test_load():
 #                        message = 'TEST File downloaded.'
                     if load_json(file_name, query_params, check_zero):  
@@ -339,7 +339,7 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
         else:
             file_date = datetime.now().date()
             if access: 
-                print('NOT cash')   
+#                print('NOT cash')   
 #                if test_load():
 #                    message = 'TEST File downloaded.'
                 if load_json(file_name, query_params, check_zero):  
@@ -778,9 +778,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
-                print("Каталог " + str(country) + " успешно создан.")
-            else:
-                print("Каталог " + str(country) + " уже существует.")
+#                print("Каталог " + str(country) + " успешно создан.")
+#            else:
+#                print("Каталог " + str(country) + " уже существует.")
 
             path      = root + str(country) + "/"
             new       = 'Errors/'
@@ -788,9 +788,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
-                print("Каталог Errors успешно создан.")
-            else:
-                print("Каталог Errors уже существует.")
+#                print("Каталог Errors успешно создан.")
+#            else:
+#                print("Каталог Errors уже существует.")
 
             if league > 0:
                 path      = root + str(country) + "/"
@@ -799,9 +799,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
                 if not os.path.exists(full_path):
                     os.mkdir(full_path)
-                    print("Каталог " + str(league) + " успешно создан.")
-                else:
-                    print("Каталог " + str(league) + " уже существует.")
+#                    print("Каталог " + str(league) + " успешно создан.")
+#                else:
+#                    print("Каталог " + str(league) + " уже существует.")
 
             if season > 0:
                 path      = root + str(country) + "/" + str(league) + "/"
@@ -810,9 +810,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
                 if not os.path.exists(full_path):
                     os.mkdir(full_path)
-                    print("Каталог " + str(season) + " успешно создан.")
-                else:
-                    print("Каталог " + str(season) + " уже существует.")
+#                    print("Каталог " + str(season) + " успешно создан.")
+#                else:
+#                    print("Каталог " + str(season) + " уже существует.")
 
             if rounds > 0:
                 path      = root + str(country) + "/" + str(league) + "/" + str(season) + "/"
@@ -821,9 +821,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
                     full_path = os.path.join(path, new)
                     if not os.path.exists(full_path):
                         os.mkdir(full_path)
-                        print("Каталог " + new + " успешно создан.")
-                    else:
-                        print("Каталог " + new + " уже существует.")
+#                        print("Каталог " + new + " успешно создан.")
+#                    else:
+#                        print("Каталог " + new + " уже существует.")
 
             return True
 
@@ -882,7 +882,7 @@ def get_fixture_league(country, league, season):
         data_json = download_and_save(access, 
                                         'Statistic/' + country + '/' + str(league) + '/' + str(season) + '/' + 'progress_' + str(league) + '_' + str(season) + '.json', 
                                         'fixtures?league=' + str(league) + '&season=' + str(season), cash, check_zero, range_season, only_new)
-        print('fixtures?league=' + str(league) + '&season=' + str(season) + ': ' + data_json[1])
+#        print('fixtures?league=' + str(league) + '&season=' + str(season) + ': ' + data_json[1])
 #        if not access:
 #            sys.exit()
         
@@ -907,20 +907,20 @@ def get_fixture_league(country, league, season):
         #result = jmespath.search(expression, data_json[0])[0]
         result_date = jmespath.search(expression, data_json[0])
         # Выводим результат
-        print('result_date: ', result_date)
+#        print('result_date: ', result_date)
 
 #        current_round = get_current_round(league, season)
 #        print('current_round: ' + str(current_round))
 
         if not result_date:
-            print('Повтор не нужен')
+#            print('Повтор не нужен')
             break
 
         status = result_date[0]
-        print(status)
+#        print(status)
 
         count += 1
-        print('count: ' + str(count))
+#        print('count: ' + str(count))
 
         cash = False
 

@@ -115,7 +115,7 @@ def get_total_round(league, season):
     data_json = mb.download_and_save(access, 
                                     'Statistic/' + str(my_country) + '/' + str(league) + '/' + str(season) + '/total_round_' + str(league) + '_' + str(season) + '.json', 
                                     'fixtures/rounds?league=' + str(league) + '&season=' + str(season), cash, True, range_season)
-    print('fixtures/rounds?league=' + str(league) + '&season=' + str(season) + ':' + data_json[1])
+#    print('fixtures/rounds?league=' + str(league) + '&season=' + str(season) + ':' + data_json[1])
     if not access:
         sys.exit()
     
@@ -161,7 +161,7 @@ def get_current_round(league, season):
         data_json = mb.download_and_save(access, 
                                         'Statistic/' + str(my_country) + '/' + str(league) + '/' + str(season) + '/current_round_' + str(league) + '_' + str(season) + '.json', 
                                         'fixtures/rounds?league=' + str(league) + '&season=' + str(season) + '&current=true', cash, check_zero, range_season, only_new)
-        print('fixtures/rounds?league=' + str(league) + '&season=' + str(season) + '&current=true: ' + data_json[1])
+#        print('fixtures/rounds?league=' + str(league) + '&season=' + str(season) + '&current=true: ' + data_json[1])
         if not access:
             sys.exit()
 
@@ -173,7 +173,7 @@ def get_current_round(league, season):
             
         else:
             count += 1
-            print('count: ' + str(count))
+#            print('count: ' + str(count))
 
             cash = False
 
@@ -864,7 +864,7 @@ def set_global_current_count():
     if my_time > 60:
         mb.current_count = 0 
         global_time_request = time.time()
-        print('Сброс current_count')
+        print('Сброс current_count', my_time)
 
  #mb.setup_logger()
 
@@ -1125,7 +1125,7 @@ def set_country_options(selected_country): # формируем список л�
         set_global_current_count()
         result_dict = mb.build_directory("Statistic/", selected_country)
         if isinstance(result_dict, str):
-            print(result_dict)
+            print('exit: ', result_dict)
             exit(1)
 
         if incache:
@@ -1162,7 +1162,7 @@ def set_leagues_options(selected_league): # подготовка списка с
         set_global_current_count()
         result_dict = mb.build_directory("Statistic/", my_country, selected_league)
         if isinstance(result_dict, str):
-            print(result_dict)
+            print('exit: ', result_dict)
             exit(1)
 
         if incache:
@@ -1206,7 +1206,7 @@ def update_graph(select_season, country, select_league):
 
     result_dict = mb.build_directory("Statistic/", country, select_league, select_season)
     if isinstance(result_dict, str):
-        print(result_dict)
+        print('exit: ', result_dict)
         exit(1)
 
     set_global_current_count()
@@ -1353,7 +1353,7 @@ def display_value(value):
     elif my_mode == 2:
 
         stop_signal = False
-        print('stop_signal False Input("radios", "value"): ', value)
+        print('set stop_signal = False and Input("radios", "value"): ', value)
         set_global_current_count()
         my_graph = dd.set_detail(app,
                                 my_country, 
@@ -1370,12 +1370,12 @@ def display_value(value):
         if isinstance(my_graph, bool):
             if not my_graph:
                 stop_signal = True
-                print('stop_signal True Input("radios", "value"): ', value)
+                print('set stop_signal = True, radios = 2 and my_graph = ', my_graph)
                 return message, '', '', get_error_message()
 
         else:
             stop_signal = True
-            print('stop_signal True Input("radios", "value"): ', value)
+            print('set stop_signal = True, radios = 2 and type of my_graph =  ', type(my_graph))
             return message, my_graph, '', get_error_message()
 
     else:
@@ -1419,19 +1419,22 @@ def display_modal(selected_value):
     Input("interval", "n_intervals"),
     prevent_initial_call = True,
 )
-def manage_counter(n_clicks, n_intervals):
+def manage_counter(value, n_intervals):
     global stop_signal
 
     # Определяем, какой input вызвал колбэк
     triggered_id = callback_context.triggered[0]["prop_id"]
-    print('triggered_id: ', triggered_id)
-    print('triggered_id stop_signal: ', stop_signal)
+    if stop_signal:
+        print('triggered_id: ', triggered_id)
+        print('triggered_id stop_signal: ', stop_signal)
 
     info = get_info_message()
+#    info = get_error_message()
 
     # Если запуск от кнопки
     if triggered_id == "radios.value":
-        if not stop_signal:
+#        if not stop_signal:
+        if value == 2 and not stop_signal:
             print('Пришел сигнал СТАРТ: ', stop_signal)
             return info, False  # Активируем interval
 #        return '', True  # Blocking interval
@@ -1443,7 +1446,8 @@ def manage_counter(n_clicks, n_intervals):
 #        info = get_info_message()
         return info, True  # Останавливаем interval
     
-    print('Здесь должен быть вывод на экран mb.info_request:', mb.info_request)
+    if stop_signal:
+        print('Здесь должен быть вывод на экран mb.info_request:', mb.info_request)
 #    info = get_info_message()
     
     return info, False 

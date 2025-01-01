@@ -215,7 +215,7 @@ def get_games_goals(list_games, league, season, team, arr_type_events):
 #            print('fixtures/events?fixture=' + str(game_id) + ': ' + data_json_goal[1])
 
             if type(data_json_goal[0]) == str: 
-                print(data_json_goal[0])
+                print('errors = True: ', data_json_goal[0])
                 errors = True
                 return data_json_goal[0]
             
@@ -228,12 +228,12 @@ def get_games_goals(list_games, league, season, team, arr_type_events):
                 break
             
             if result > 0:
-                print('Загрузка данных Ок. Повтор загрузки игры ' + str(game_id) + ' не нужен')
-                print('massage:', data_json_goal[1])
+#                print('Загрузка данных Ок. Повтор загрузки игры ' + str(game_id) + ' не нужен')
+#                print('massage:', data_json_goal[1])
                 break
 
             count += 1
-            print('Повторная загрузка данных игры ' + str(game_id))
+#            print('Повторная загрузка данных игры ' + str(game_id))
 
             cash = False
 
@@ -344,7 +344,7 @@ def get_games_goals(list_games, league, season, team, arr_type_events):
 
         data_card.append(my_detail)
 
-    print('Info_request: ', mb.info_request)
+#    print('Info_request: ', mb.info_request)
 
     return data_detail, data_card
 #    return detail_for_type_scored, detail_for_type_missed, current_dimension
@@ -820,7 +820,7 @@ def get_detail_games(country, league, season, sorted_team_list):
         data_detail = get_list_games(country, league, season, team)
         end_time = time.time()
         execution_time = end_time - start_time
-        print("Время выполнения get_list_games:", execution_time, "секунд")
+#        print("Время выполнения get_list_games:", execution_time, "секунд")
 
         start_time = time.time()
         all_detail   = get_games_goals(data_detail, league, season, team, arr_type_events)
@@ -832,7 +832,7 @@ def get_detail_games(country, league, season, sorted_team_list):
         df_red_cards = all_detail[1]
         end_time = time.time()
         execution_time = end_time - start_time
-        print("Время выполнения get_games_goals:", execution_time, "секунд")
+#        print("Время выполнения get_games_goals:", execution_time, "секунд")
         
         label_colors = []
         positions    = []
@@ -1312,7 +1312,7 @@ def get_detail_games(country, league, season, sorted_team_list):
         # Tracing
         end_time = time.time()
         execution_time = end_time - start_time
-        print("Время выполнения MARKERS:", execution_time, "секунд")
+#        print("Время выполнения MARKERS:", execution_time, "секунд")
         start_time = time.time()
         # Tracing
         
@@ -1395,7 +1395,7 @@ def get_detail_games(country, league, season, sorted_team_list):
         # Tracing
         end_time = time.time()
         execution_time = end_time - start_time
-        print("Время выполнения OPACITYES:", execution_time, "секунд")
+#        print("Время выполнения OPACITYES:", execution_time, "секунд")
         start_time = time.time()
         # Tracing
 
@@ -1474,7 +1474,7 @@ def get_detail_games(country, league, season, sorted_team_list):
         # Tracing
         end_time = time.time()
         execution_time = end_time - start_time
-        print("Время выполнения ANNOTATIONS:", execution_time, "секунд")
+#        print("Время выполнения ANNOTATIONS:", execution_time, "секунд")
         start_time = time.time()
         # Tracing
 
@@ -1506,7 +1506,7 @@ def get_detail_games(country, league, season, sorted_team_list):
         # Tracing
         end_time = time.time()
         execution_time = end_time - start_time
-        print("Время выполнения HOVER and SCATTER:", execution_time, "секунд")
+#        print("Время выполнения HOVER and SCATTER:", execution_time, "секунд")
         start_time = time.time()
         # Tracing
 
@@ -1516,7 +1516,7 @@ def get_detail_games(country, league, season, sorted_team_list):
         # Tracing
         end_time = time.time()
         execution_time = end_time - start_time
-        print("Время выполнения add_shapes:", execution_time, "секунд")
+#        print("Время выполнения add_shapes:", execution_time, "секунд")
         start_time = time.time()
         # Tracing
 
@@ -1546,7 +1546,7 @@ def get_detail_games(country, league, season, sorted_team_list):
         # Tracing
         end_time = time.time()
         execution_time = end_time - start_time
-        print("Время выполнения add_annotation Scored:", execution_time, "секунд")
+#        print("Время выполнения add_annotation Scored:", execution_time, "секунд")
         start_time = time.time()
         # Tracing
  
@@ -1595,7 +1595,7 @@ def get_detail_games(country, league, season, sorted_team_list):
         # Tracing
         end_time = time.time()
         execution_time = end_time - start_time
-        print("Время выполнения all_marker_opacity:", execution_time, "секунд")
+#        print("Время выполнения all_marker_opacity:", execution_time, "секунд")
         start_time = time.time()
         # Tracing
     ##################### Next team ############################
@@ -1624,7 +1624,7 @@ def get_detail_games(country, league, season, sorted_team_list):
     # Tracing
     end_time = time.time()
     execution_time = end_time - start_time
-    print("Время выполнения add_annotation_all:", execution_time, "секунд")
+#    print("Время выполнения add_annotation_all:", execution_time, "секунд")
     start_time = time.time()
     # Tracing
 
@@ -1713,7 +1713,7 @@ def get_detail_games(country, league, season, sorted_team_list):
     # Tracing
     end_time = time.time()
     execution_time = end_time - start_time
-    print("Время выполнения UPDATE LAYOUT:", execution_time, "секунд")
+#    print("Время выполнения UPDATE LAYOUT:", execution_time, "секунд")
     start_time = time.time()
     # Tracing
     
@@ -1722,7 +1722,7 @@ def get_detail_games(country, league, season, sorted_team_list):
     # Tracing
     end_time = time.time()
     execution_time = end_time - start_time
-    print("Время выполнения find_duplicate_indices:", execution_time, "секунд")
+#    print("Время выполнения find_duplicate_indices:", execution_time, "секунд")
     start_time = time.time()
     # Tracing
     
@@ -1751,7 +1751,7 @@ def get_detail_games(country, league, season, sorted_team_list):
     # Tracing
     end_time = time.time()
     execution_time = end_time - start_time
-    print("Время выполнения find_duplicate_indices_xaxis:", execution_time, "секунд")
+#    print("Время выполнения find_duplicate_indices_xaxis:", execution_time, "секунд")
     start_time = time.time()
     # Tracing
 
@@ -2254,7 +2254,7 @@ def get_detail_games(country, league, season, sorted_team_list):
     # Tracing
     end_time = time.time()
     execution_time = end_time - start_time
-    print("Время выполнения UPDATEMENUES:", execution_time, "секунд")
+#    print("Время выполнения UPDATEMENUES:", execution_time, "секунд")
     start_time = time.time()
     # Tracing
 
@@ -2282,7 +2282,7 @@ def get_detail_games(country, league, season, sorted_team_list):
     # Tracing
     end_time = time.time()
     execution_time = end_time - start_time
-    print("Время выполнения upload_dump:", execution_time, "секунд")
+#    print("Время выполнения upload_dump:", execution_time, "секунд")
     start_time = time.time()
     # Tracing
  
@@ -2812,7 +2812,7 @@ def init_detail(app):
             # Tracing
             end_time = time.time()
             execution_time = end_time - start_time
-            print("Время выполнения update_graph:", execution_time, "секунд")
+#            print("Время выполнения update_graph:", execution_time, "секунд")
             start_time = time.time()
             # Tracing
 
@@ -2821,7 +2821,7 @@ def init_detail(app):
             # Tracing
             end_time = time.time()
             execution_time = end_time - start_time
-            print("Время выполнения update_opacity:", execution_time, "секунд")
+#            print("Время выполнения update_opacity:", execution_time, "секунд")
             start_time = time.time()
             # Tracing
 
@@ -2831,7 +2831,7 @@ def init_detail(app):
             # Tracing
             end_time = time.time()
             execution_time = end_time - start_time
-            print("Время выполнения update_annotations:", execution_time, "секунд")
+#            print("Время выполнения update_annotations:", execution_time, "секунд")
             start_time = time.time()
             # Tracing
 
@@ -2847,7 +2847,7 @@ def init_detail(app):
             # Tracing
             end_time = time.time()
             execution_time = end_time - start_time
-            print("Время выполнения update_shapes:", execution_time, "секунд")
+#            print("Время выполнения update_shapes:", execution_time, "секунд")
             start_time = time.time()
             # Tracing
             return fig
@@ -2947,7 +2947,7 @@ def set_detail(app, my_country, my_league, my_season, my_total_rounds, my_curren
     end_time = time.time()
     execution_time = end_time - start_time
     print("Время выполнения get_detail_games:", execution_time, "секунд")
-    print('info_request: ', mb.info_request)
+#    print('info_request: ', mb.info_request)
  
     graph = html.Div(children = [
 #        dcc.Interval(id="interval", interval=1000, n_intervals=0, disabled=True),
