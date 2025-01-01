@@ -778,9 +778,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
-#                print("Каталог " + str(country) + " успешно создан.")
-#            else:
-#                print("Каталог " + str(country) + " уже существует.")
+                print("Каталог " + str(country) + " успешно создан.")
+            else:
+                print("Каталог " + str(country) + " уже существует.")
 
             path      = root + str(country) + "/"
             new       = 'Errors/'
@@ -788,9 +788,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
-#                print("Каталог Errors успешно создан.")
-#            else:
-#                print("Каталог Errors уже существует.")
+                print("Каталог Errors успешно создан.")
+            else:
+                print("Каталог Errors уже существует.")
 
             if league > 0:
                 path      = root + str(country) + "/"
@@ -799,9 +799,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
                 if not os.path.exists(full_path):
                     os.mkdir(full_path)
-#                    print("Каталог " + str(league) + " успешно создан.")
-#                else:
-#                    print("Каталог " + str(league) + " уже существует.")
+                    print("Каталог " + str(league) + " успешно создан.")
+                else:
+                    print("Каталог " + str(league) + " уже существует.")
 
             if season > 0:
                 path      = root + str(country) + "/" + str(league) + "/"
@@ -810,9 +810,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
                 if not os.path.exists(full_path):
                     os.mkdir(full_path)
-#                    print("Каталог " + str(season) + " успешно создан.")
-#                else:
-#                    print("Каталог " + str(season) + " уже существует.")
+                    print("Каталог " + str(season) + " успешно создан.")
+                else:
+                    print("Каталог " + str(season) + " уже существует.")
 
             if rounds > 0:
                 path      = root + str(country) + "/" + str(league) + "/" + str(season) + "/"
@@ -821,9 +821,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
                     full_path = os.path.join(path, new)
                     if not os.path.exists(full_path):
                         os.mkdir(full_path)
-#                        print("Каталог " + new + " успешно создан.")
-#                    else:
-#                        print("Каталог " + new + " уже существует.")
+                        print("Каталог " + new + " успешно создан.")
+                    else:
+                        print("Каталог " + new + " уже существует.")
 
             return True
 
