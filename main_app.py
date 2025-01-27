@@ -68,6 +68,9 @@ def get_error_message():
     mb.info_request['request'] = my_status[1] 
     mb.info_request['limit']   = my_status[2]
 
+    print('my_status: ', my_status)
+    print('dd.count_games_load: ', dd.count_games_load)
+
     if my_status[1] < my_status[2] - 5:
         message = html.Div('Request: ' + str(my_status[1]) + '. Total: ' + str(my_status[2]),
                             style={
@@ -78,6 +81,7 @@ def get_error_message():
                         )
                         
     elif (my_status[1] + dd.count_games_load) > (my_status[2] - 5):
+        
         text_message = "If request wil be continue than limit used: Request: " + str(my_status[1]) + ", Planning count request: " +  str(dd.count_games_load) + ", Total: " + str(my_status[2]) + " ( You can only use data from previous requests in the cache)."
         message = html.Div(text_message, 
                             style={
