@@ -36,8 +36,8 @@ info_request = {'team': '', 'count': 0, 'round': 0, 'time': 0, 'delay': 0, 'coun
 stop_signal = False  # Переменная для остановки функции обновления
 
 load_dotenv()
-API_KEY = os.environ.get('MY_API_KEY')
-
+#API_KEY = os.environ.get('MY_API_KEY')
+API_KEY = os.getenv('MY_API_KEY')
 
 def setup_logger():
     logging.basicConfig(level = logging.DEBUG, 
