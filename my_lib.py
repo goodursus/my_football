@@ -143,6 +143,8 @@ def get_status():
     
     sleep_requests(True)
 
+    print('get_status MY_CODE: ', API_KEY)
+
     conn = http.client.HTTPSConnection("v3.football.api-sports.io")
 
     headers = {
@@ -199,6 +201,8 @@ def load_json(file_name, query_params, check_zero):
 
     # Download the file from the URL
     conn = http.client.HTTPSConnection("v3.football.api-sports.io")
+
+    print('HTTPSConnection MY_CODE: ', API_KEY)
 
     headers = {
         'x-rapidapi-host': "v3.football.api-sports.io",
