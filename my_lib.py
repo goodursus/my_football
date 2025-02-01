@@ -27,13 +27,15 @@ import logging
 import detail_data as dd
 from dotenv import load_dotenv
 import random
+from collections import deque
 
 time_request  = 0
 count_request = 0
 current_count = 0
-range_season = {}
-info_request = {'team': '', 'count': 0, 'round': 0, 'time': 0, 'delay': 0, 'count_delay': 0, 'request': 0, 'limit': 0, 'mes_error': ''}
-stop_signal = False  # Переменная для остановки функции обновления
+event_times   = deque()
+range_season  = {}
+info_request  = {'team': '', 'count': 0, 'round': 0, 'time': 0, 'delay': 0, 'count_delay': 0, 'request': 0, 'limit': 0, 'mes_error': ''}
+stop_signal   = False  # Переменная для остановки функции обновления
 
 load_dotenv()
 #API_KEY = os.environ.get('MY_API_KEY')
@@ -71,6 +73,63 @@ def sleep_requests(trace = False):
     global count_request
     global current_count
     global info_request
+    global event_times
+
+    count_request = count_request + 1
+    current_count = current_count + 1
+
+    time_request = time.time()
+    
+#    my_time = int(time.time() - time_request)
+#    info_request['time'] = my_time
+    print(f"Количество запросов: {current_count}/{count_request} раз. Время: {time.strftime('%H:%M:%S', time.localtime(time_request))}", flush = True)
+    # Удаляем события, которые произошли более 60 секунд назад
+    while event_times and event_times[0] <= time_request - 60:
+        print(f'Удаляем событие за время {event_times[0]}', end = "", flush = True )
+        event_times.popleft()
+    
+    # Если событий 10 или больше, ждем
+    if len(event_times) >= 10:
+        next_available_time = event_times[0] + 60
+        planned_delay = max(0, next_available_time - time_request)
+        print(f"Rate limit reached. Planned wait time: {planned_delay:.2f} seconds.")
+        info_request['delay'] = int(planned_delay)
+ 
+        for remaining in range(int(planned_delay), 0, -1):
+            print(f"\rWaiting: {remaining} seconds", end = "", flush = True)
+            time.sleep(1)
+            info_request['count_delay'] = remaining
+            while event_times and event_times[0] <= time.time() - 55:
+                event_times.popleft()
+
+        print("\rWaiting complete.              ")
+        
+        while event_times and event_times[0] <= time.time() - 55:
+            print(f'Удаляем событие за время {event_times[0]}\n', end = "", flush = True )
+            event_times.popleft()
+    
+        current_count = 0
+        info_request['count_delay'] = 0
+        info_request['delay'] = 0
+    
+    #current_count += 1
+    
+    # Добавляем текущее событие
+    event_times.append(time.time())
+    
+    active_events_duration = time_request - event_times[0] if event_times else 0.0
+    print(f"Активные события занимают: {active_events_duration:.0f} сек")
+            
+    # Отображаем последние 10 событий
+    print(f"Last {len(event_times)} event times:", [time.strftime('%H:%M:%S', time.localtime(t)) for t in event_times])
+    
+    #count_request += 1
+
+def sleep_requests_my(trace = False):
+    global time_request
+    global count_request
+    global current_count
+    global info_request
 
     count_request = count_request + 1
     current_count = current_count + 1
@@ -79,25 +138,25 @@ def sleep_requests(trace = False):
     if current_count == 1:
         time_request = time.time()
         current_time = datetime.fromtimestamp(time_request).strftime("%H:%M:%S")
-        print(f"Время первого запроса из 9-ти: {current_time}")
+        print(f"\nВремя первого запроса из 9-ти: {current_time}", flush = True)
     else:
         my_time = int(time.time() - time_request)
 
     if trace:
-        print("Время выполнения запросов:", my_time, "секунд")
+        print(f"Время выполнения запросов: {my_time} секунд", flush = True)
         info_request['time'] = my_time
         fix_time = time.strftime("%H:%M:%S")
-        print(f"Количество запросов: {current_count}/{count_request} раз. Время запроса: {fix_time}")
+        print(f"Количество запросов: {current_count}/{count_request} раз. Время запроса: {fix_time}", flush = True)
         info_request['count'] = count_request
     if current_count == 9:    
-        if my_time < 60: 
+        if my_time < 65: 
             if trace:
-                print("Ожидание " + str(65 - my_time) + " секунд")
+                print(f"Ожидание {str(65 - my_time)} секунд\n", flush = True)
                 info_request['delay'] = 65 - my_time
             my_pause = 65 - my_time
             for i in range(my_pause, 0, -1):
                 if trace:
-                    print(f'Countdown: {i} seconds', end='\r')
+                    print(f'\rCountdown: {i} seconds', end = "", flush = True)
                 time.sleep(1)
                 info_request['count_delay'] = i
             
@@ -107,7 +166,7 @@ def sleep_requests(trace = False):
         time_request  = time.time()
         current_count = 0
 
-    print('Info_request: ', info_request)
+#    print('Info_request: ', info_request)
 
     return my_time
 
@@ -145,10 +204,10 @@ def get_status():
 
 #    print('get_status MY_CODE: ', API_KEY)
     
-    if API_KEY:
-        print(f"API_KEY is loaded, length: {len(API_KEY)} characters")
-    else:
-        print("API_KEY is not set!")
+#    if API_KEY:
+#        print(f"API_KEY is loaded, length: {len(API_KEY)} characters")
+#    else:
+#        print("API_KEY is not set!")
     
     conn = http.client.HTTPSConnection("v3.football.api-sports.io")
 
@@ -232,13 +291,13 @@ def load_json(file_name, query_params, check_zero):
         return True    
     
     elif 'rateLimit' in my_json_dict:
-        print('rateLimit')
+        print(f'rateLimit', flush = True)
         with open('Statistic/' + str(dd.country) + '/' + 'Errors/error_'+ new_string + '.json', 'w') as f:
             f.write(my_json)
         return False
     
     elif  my_json_dict['results'] == 0 and check_zero:
-        print('Look error in file: Statistic/' + str(dd.country) + '/' + 'Errors/error_'+ new_string + '.json')
+        print(f'Look error in file: Statistic/ {str(dd.country)} /Errors/error_{new_string}.json', flush = True)
         with open('Statistic/' + str(dd.country) + '/' + 'Errors/error_'+ new_string + '.json', 'w') as f:
             f.write(my_json)
         return False
@@ -248,7 +307,7 @@ def get_access(cost):
     access = False
     status = get_status()
     
-    print('get_access.status: ' + str(status))
+    print(f'get_access.status: {str(status)}', flush = True)
     if status[0]:
         if status[2] - status[1] > cost + 5:
             access = True
@@ -262,12 +321,12 @@ def test_load():
     sleep_requests(True)
 
     delay = random.randint(1, 10)  # Generate a random delay between 1 and 60 seconds
-    print(f"Delaying for {delay} seconds...")
+    print(f"Delaying for {delay} seconds...", flush = True)
     for i in range(delay, 0, -1):
-        print(f'Countdown: {i} seconds', end='\r')
+        print(f'Countdown: {i} seconds\n', flush = True)
         time.sleep(1)
 #    time.sleep(delay)  # Pause execution for the specified delay
-    print("Delay complete!")
+    print("Delay complete!", flush = True)
 
     return True
 
@@ -371,7 +430,7 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
         return data, message, file_outside, file_date
     
     except Exception as e:
-        print("Error: ", type(e).__name__)
+        print(f'Error: {type(e).__name__}', flush = True)
         return  '', 'Error: Unable to Download and Save File', file_outside, today
 
 def get_country_location(country_name):
@@ -785,9 +844,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
-                print("Каталог " + str(country) + " успешно создан.")
+                print("Каталог " + str(country) + " успешно создан.", flush = True)
             else:
-                print("Каталог " + str(country) + " уже существует.")
+                print("Каталог " + str(country) + " уже существует.", flush = True)
 
             path      = root + str(country) + "/"
             new       = 'Errors/'
@@ -795,9 +854,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
-                print("Каталог Errors успешно создан.")
+                print("Каталог Errors успешно создан.", flush = True)
             else:
-                print("Каталог Errors уже существует.")
+                print("Каталог Errors уже существует.", flush = True)
 
             if league > 0:
                 path      = root + str(country) + "/"
@@ -806,9 +865,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
                 if not os.path.exists(full_path):
                     os.mkdir(full_path)
-                    print("Каталог " + str(league) + " успешно создан.")
+                    print("Каталог " + str(league) + " успешно создан.", flush = True)
                 else:
-                    print("Каталог " + str(league) + " уже существует.")
+                    print("Каталог " + str(league) + " уже существует.", flush = True)
 
             if season > 0:
                 path      = root + str(country) + "/" + str(league) + "/"
@@ -817,9 +876,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
 
                 if not os.path.exists(full_path):
                     os.mkdir(full_path)
-                    print("Каталог " + str(season) + " успешно создан.")
+                    print("Каталог " + str(season) + " успешно создан.", flush = True)
                 else:
-                    print("Каталог " + str(season) + " уже существует.")
+                    print("Каталог " + str(season) + " уже существует.", flush = True)
 
             if rounds > 0:
                 path      = root + str(country) + "/" + str(league) + "/" + str(season) + "/"
@@ -828,9 +887,9 @@ def build_directory(root, country, league = 0, season = 0, rounds = 0):
                     full_path = os.path.join(path, new)
                     if not os.path.exists(full_path):
                         os.mkdir(full_path)
-                        print("Каталог " + new + " успешно создан.")
+                        print("Каталог " + new + " успешно создан.", flush = True)
                     else:
-                        print("Каталог " + new + " уже существует.")
+                        print("Каталог " + new + " уже существует.", flush = True)
 
             return True
 

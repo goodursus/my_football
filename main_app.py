@@ -68,8 +68,8 @@ def get_error_message():
     mb.info_request['request'] = my_status[1] 
     mb.info_request['limit']   = my_status[2]
 
-    print('my_status: ', my_status)
-    print('dd.count_games_load: ', dd.count_games_load)
+    print(f'my_status: {my_status}', flush = True)
+    print(f'dd.count_games_load: {dd.count_games_load}', flush = True)
 
     if my_status[1] < my_status[2] - 5:
         message = html.Div('Request: ' + str(my_status[1]) + '. Total: ' + str(my_status[2]),
@@ -828,11 +828,11 @@ def get_list_leagues(country):
         my_dict = dict()
         my_dict = {"label": html.Span(
                 [
-                    html.Img(src=row[4], height=20),
-                    html.Span(row[2], style={'font-size': 15, 'padding-left': 10}),
+                    html.Img(src=row.iloc[4], height=20),
+                    html.Span(row.iloc[2], style={'font-size': 15, 'padding-left': 10}),
                 ], style={'align-items': 'center', 'justify-content': 'center'}
             ), 
-            'value': row[1]}
+            'value': row.iloc[1]}
 
         leagues.append(my_dict)
 
@@ -864,11 +864,15 @@ def set_global_current_count():
 #    stop_signal = False
 
     my_time = int(time.time() - global_time_request)
-    print('global my_time', my_time)
-    if my_time > 60:
+#    print('global my_time', my_time)
+    current_time = time.strftime("%H:%M:%S", time.localtime(time.time()))
+    request_time = time.strftime("%H:%M:%S", time.localtime(global_time_request))
+#    diff_time    = time.strftime("%H:%M:%S", time.localtime(my_time))
+    print(f'Тек. время: {current_time}, global_time_request: {request_time}, задержка: {my_time}', flush = True)
+    if my_time > 65:
         mb.current_count = 0 
         global_time_request = time.time()
-        print('Сброс current_count', my_time)
+        print(f'Сброс current_count {my_time}', flush = True)
 
  #mb.setup_logger()
 
@@ -995,6 +999,10 @@ app = dash.Dash(__name__,
 
 # Flask сервер для Gunicorn
 server = app.server
+
+# Отключаем логирование Werkzeug (HTTP-запросов)
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)  # Только ошибки будут выводиться в консоль
 
 #app.layout = dbc.Container([
 app.layout = html.Div(children = [
@@ -1129,7 +1137,7 @@ def set_country_options(selected_country): # формируем список л�
         set_global_current_count()
         result_dict = mb.build_directory("Statistic/", selected_country)
         if isinstance(result_dict, str):
-            print('exit: ', result_dict)
+            print(f'exit: {result_dict}', flush = True)
             exit(1)
 
         if incache:
@@ -1166,7 +1174,7 @@ def set_leagues_options(selected_league): # подготовка списка с
         set_global_current_count()
         result_dict = mb.build_directory("Statistic/", my_country, selected_league)
         if isinstance(result_dict, str):
-            print('exit: ', result_dict)
+            print(f'exit: {result_dict}', flush = True)
             exit(1)
 
         if incache:
@@ -1210,7 +1218,7 @@ def update_graph(select_season, country, select_league):
 
     result_dict = mb.build_directory("Statistic/", country, select_league, select_season)
     if isinstance(result_dict, str):
-        print('exit: ', result_dict)
+        print(f'exit: {result_dict}', flush = True)
         exit(1)
 
     set_global_current_count()
@@ -1357,7 +1365,7 @@ def display_value(value):
     elif my_mode == 2:
 
         stop_signal = False
-        print('set stop_signal = False and Input("radios", "value"): ', value)
+        print(f'set stop_signal = False and Input("radios", "value"): {value}\n', flush = True)
         set_global_current_count()
         my_graph = dd.set_detail(app,
                                 my_country, 
@@ -1374,12 +1382,12 @@ def display_value(value):
         if isinstance(my_graph, bool):
             if not my_graph:
                 stop_signal = True
-                print('set stop_signal = True, radios = 2 and my_graph = ', my_graph)
+                print(f'set stop_signal = True, radios = 2 and my_graph =  {my_graph}', flush = True)
                 return message, '', '', get_error_message()
 
         else:
             stop_signal = True
-            print('set stop_signal = True, radios = 2 and type of my_graph =  ', type(my_graph))
+            print(f'set stop_signal = True, radios = 2 and type of my_graph =  {type(my_graph)}', flush = True)
             return message, my_graph, '', get_error_message()
 
     else:
@@ -1426,11 +1434,13 @@ def display_modal(selected_value):
 def manage_counter(value, n_intervals):
     global stop_signal
 
+#    print(f'mb.info_request: {mb.info_request}', flush = True)
+
     # Определяем, какой input вызвал колбэк
     triggered_id = callback_context.triggered[0]["prop_id"]
     if stop_signal:
-        print('triggered_id: ', triggered_id)
-        print('triggered_id stop_signal: ', stop_signal)
+        print(f'triggered_id: {triggered_id}\n', flush = True)
+        print(f'triggered_id stop_signal: {stop_signal}\n', flush = True)
 
     info = get_info_message()
 #    info = get_error_message()
@@ -1439,19 +1449,20 @@ def manage_counter(value, n_intervals):
     if triggered_id == "radios.value":
 #        if not stop_signal:
         if value == 2 and not stop_signal:
-            print('Пришел сигнал СТАРТ: ', stop_signal)
+            print(f'Пришел сигнал СТАРТ: {stop_signal}', flush = True)
             return info, False  # Активируем interval
 #        return '', True  # Blocking interval
 
     # Если запуск от interval
 #    if stop_signal and mb.info_request['count_delay'] == 0:
-    if stop_signal:
-        print('Пришел сигнал СТОП: ', mb.info_request['count_delay'])
+    if stop_signal and mb.info_request["count_delay"] == 0:
+        print(f'Пришел сигнал СТОП (count_delay): {mb.info_request["count_delay"]}', flush = True)
 #        info = get_info_message()
+#        time.sleep(mb.info_request["delay"])
         return info, True  # Останавливаем interval
     
-    if stop_signal:
-        print('Здесь должен быть вывод на экран mb.info_request:', mb.info_request)
+#    if stop_signal:
+#        print(f'Здесь должен быть вывод на экран mb.info_request: {mb.info_request}', flush = True)
 #    info = get_info_message()
     
     return info, False 

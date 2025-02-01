@@ -245,7 +245,7 @@ def get_games_goals(list_games, league, season, team, arr_type_events):
         current_time = time.time() - start_time
         
 #        print('current_time: ' + str(current_time))
-        print('round: ' + str(i + 1))
+        print(f'round: {str(i + 1)}, team: {team}')
         mb.info_request['round'] = i + 1
         mb.info_request['team'] = team
 
