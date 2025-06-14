@@ -363,7 +363,12 @@ def download_and_save(access, file_name, query_params, cash = True, check_zero =
                         in_range = False
                 
                 if only_new:
-                    load = file_date < today and in_range
+                    if file_date < today and in_range:
+                        load = True
+                    elif not in_range and file_date < data_end:   
+                        load = True
+                    else:
+                        load = False 
                 else:
                     load = False
 

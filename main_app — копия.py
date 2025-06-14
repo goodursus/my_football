@@ -1415,80 +1415,17 @@ def display_modal(selected_value):
     
     if selected_value == 'item1':
         header = "Help"
-#        body = html.Div([hlp.create_help_en()
-#        ])
-        body = html.Div([
-            dbc.Button("Expand to full screen", id = "fullscreen-toggle-en", className = "mb-3"),
-            html.Div([
-                hlp.create_help_en(width = "100%", height = "80vh", fullscreen = False)
-            ], id = "modal-body-content-en", style = {"width": "100%", "height": "80vh", "position": "relative"})
+        body = html.Div([hlp.create_help_en()
         ])
         return True, header, body
     
     elif selected_value == 'item2':
         header = "Помощь"
-        body = html.Div([
-            dbc.Button("Развернуть на весь экран", id="fullscreen-toggle-ru", className="mb-3"),
-            html.Div([
-                hlp.create_help_ru(width = "100%", height = "80vh", fullscreen = False)
-            ], id = "modal-body-content-ru", style = {"width": "100%", "height": "80vh", "position": "relative"})
+        body = html.Div([hlp.create_help_ru()
         ])
         return True, header, body
 
     return False, "", ""
-
-@app.callback(
-    [Output('modal-body-content-ru', 'style'),
-     Output('modal-body-content-ru', 'children'),
-     Output('fullscreen-toggle-ru', 'children')],
-    Input('fullscreen-toggle-ru', 'n_clicks'),
-    State('fullscreen-toggle-ru', 'children'),
-    prevent_initial_call = True
-)
-def toggle_fullscreen_ru(n_clicks, button_text):
-    if n_clicks is None:
-        raise dash.exceptions.PreventUpdate
-        
-    if "Развернуть" in button_text:
-        # Переключаемся в полноэкранный режим
-        return [
-            {"width": "100vw", "height": "100vh", "position": "fixed", "top": "0", "left": "0", "zIndex": "9999"},
-            hlp.create_help_ru(width="100vw", height="100vh", fullscreen=True),
-            "Свернуть"
-        ]
-    else:
-        # Возвращаемся к обычному размеру
-        return [
-            {"width": "100%", "height": "80vh", "position": "relative"},
-            hlp.create_help_ru(width="100%", height="80vh", fullscreen=False),
-            "Развернуть на весь экран"
-        ]
-@app.callback(
-    [Output('modal-body-content-en', 'style'),
-     Output('modal-body-content-en', 'children'),
-     Output('fullscreen-toggle-en', 'children')],
-    Input('fullscreen-toggle-en', 'n_clicks'),
-    State('fullscreen-toggle-en', 'children'),
-    prevent_initial_call=True
-)
-def toggle_fullscreen_en(n_clicks, button_text):
-    if n_clicks is None:
-        raise dash.exceptions.PreventUpdate
-        
-    if "Expand" in button_text:
-        # Переключаемся в полноэкранный режим
-        return [
-            {"width": "100vw", "height": "100vh", "position": "fixed", "top": "0", "left": "0", "zIndex": "9999"},
-            hlp.create_help_en(width="100vw", height="100vh", fullscreen=True),
-            "Collapse"
-        ]
-    else:
-        # Возвращаемся к обычному размеру
-        return [
-            {"width": "100%", "height": "80vh", "position": "relative"},
-            hlp.create_help_en(width="100%", height="80vh", fullscreen=False),
-            "Expand to full screen"
-        ]
 
 @app.callback(
     Output("error-message", "children", allow_duplicate = True),
